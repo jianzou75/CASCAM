@@ -1,2 +1,2 @@
-# gull
- Genomics Congruence Framework for Cancer Cell Line Selection
+# GULL (Genomics congrUence framework for ceLL line selection)
+
