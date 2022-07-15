@@ -220,10 +220,12 @@ pathview_analysis <- function(object, interested_cell, pathway_name){
                                   limit=list(gene=c(-3,3)), bins = list(gene = 16),
                                   low = list(gene = "#B2E6F0"), mid = list(gene = "#FF0018"), high = list(gene = "#FFF485"),
                                   node.sum = "mean")
+  invisible(file.remove(paste0("hsa",kegg_id,".png")))
+  invisible(file.remove(paste0("hsa",kegg_id,".xml")))
 
   object@pathview_figure <- pathview_figure
 
-  return(pv.out)
+  return(object)
 }
 
 
