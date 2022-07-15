@@ -151,6 +151,11 @@ genome_selection <- function(object, R = 1000){
   names(sda_lds_ci) <- names(center)
   object@sda_lds_ci <- sda_lds_ci
 
+  uninterested_subtype <- setdiff(object@sda_model$classes, object@interested_subtype)
+  classification_combine = ifelse((object@sda_predict_prob[,object@interested_subtype] > 0.5 & object@sda_ds_pval[,object@interested_subtype] > 0.025 & object@sda_ds_pval[,object@interested_subtype] < 0.975),
+                                   object@interested_subtype, uninterested_subtype)
+  object@selected_cells <- rownames(object@sda_predict_prob)[classification_combine == object@interested_subtype]
+
   return(object)
 }
 
@@ -242,7 +247,6 @@ genome_selection_visualize <- function(object){
 
   object@genome_figure <- list(sda_project_position = sda_project_position,
                                sda_ds_ci_rank = sda_ds_ci_rank)
-  object@selected_cells <- genome_ci[position$classification_combine == object@interested_subtype, ]$cell
 
   return(object)
 }

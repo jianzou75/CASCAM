@@ -139,7 +139,7 @@ pathway_specific_heatmap <- function(object, pathway_name){
 #' @examples
 pathway_specific_ridgeline <- function(object, interested_cells, pathway_name){
   if(length(interested_cells) > 5){
-    warning("It is highly recommended to list less than 5 cells, otherwise the figure will be difficult to read.")
+    warning("It is highly recommended to list less than 5 cells, otherwise the figure will be too busy to read.")
   }
 
   allcolour = c("#3AC9B0","#F2C935","#DC143C","#0000FF","#20B2AA","#FFA500","#9370DB","#98FB98","#F08080","#1E90FF","#7CFC00","#FFFF00",
