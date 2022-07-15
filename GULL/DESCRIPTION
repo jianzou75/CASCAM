@@ -2,10 +2,27 @@ Package: GULL
 Type: Package
 Title: Genomics Congruence Framework for Cell Line Selection
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
+Author: Jian Zou
+Maintainer: Jian Zou <jian.zou@pitt.edu>
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 7.1.2
+Depends:
+    sparseLDA,
+    doParallel,
+    boot,
+    caret,
+    magrittr,
+    ggplot2,
+    ggrepel,
+    patchwork,
+    dplyr,
+    ggridges,
+    reshape2,
+    pathview,
+    grid,
+    png,
+    ggplotify
