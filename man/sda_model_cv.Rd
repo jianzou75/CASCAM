@@ -27,6 +27,9 @@ A \code{GULL} object with sda_model, cell_norm_data, tumor_norm_data, tumor_sda_
 This function trains a sparse discriminant analysis model using tumor gene expression data with cross-validation for parameter selection.
  Users can refer to the function \link{sda_model} if parameters are known.
 }
+\examples{
+
+}
 \references{
 Clemmensen, Line, Trevor Hastie, Daniela Witten, and Bjarne Ersbøll. 2011. “Sparse Discriminant Analysis.”
  Technometrics: A Journal of Statistics for the Physical, Chemical, and Engineering Sciences 53 (4): 406–13. https://doi.org/10.1198/tech.2011.08118.

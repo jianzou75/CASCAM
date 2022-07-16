@@ -31,5 +31,7 @@ Imports:
     Seurat,
     fgsea,
     qusage,
-    mclust
+    mclust,
+    shinythemes,
+    shiny
 URL: https://jianzou75.github.io/gull/
