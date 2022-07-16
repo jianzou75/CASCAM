@@ -34,5 +34,6 @@ Imports:
     mclust,
     shinythemes,
     shiny,
-    openxlsx
+    openxlsx,
+    XML
 URL: https://jianzou75.github.io/gull/
