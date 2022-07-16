@@ -7,6 +7,7 @@ Maintainer: Jian Zou <jian.zou@pitt.edu>
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
 License: What license is it under?
+Depends: R (>= 4.0.2)
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.0
@@ -27,6 +28,7 @@ Imports:
     grid,
     png,
     ggplotify,
+    DESeq2,
     Seurat,
     fgsea,
     qusage,
