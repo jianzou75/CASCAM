@@ -13,9 +13,6 @@ pathview_analysis(object, interested_cell, pathway_name)
 
 \item{pathway_name}{The interested pathway, which should be within the KEGG and Hallmark pathways.}
 }
-\value{
-
-}
 \description{
 Pathview of the interested cell in interested pathway
 }

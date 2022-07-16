@@ -6,9 +6,6 @@
 \usage{
 run_GULL_app()
 }
-\value{
-
-}
 \description{
 This is the function to call a Shiny GUI app for data exploration. After preparing a GULL object, users can call this function to perform the
 genome-wide selection and pathway specific analysis.

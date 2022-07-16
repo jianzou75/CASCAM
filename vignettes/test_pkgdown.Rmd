@@ -1,0 +1,10 @@
+---
+title: "Introduction to the Data in PRECISION.seq"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{The GULL Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+test

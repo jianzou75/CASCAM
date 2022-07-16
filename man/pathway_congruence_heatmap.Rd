@@ -9,9 +9,6 @@ pathway_congruence_heatmap(object)
 \arguments{
 \item{object}{A \code{GULL} object.}
 }
-\value{
-
-}
 \description{
 A heatmap showing the congruence between the cell lines and tumors for detailed pathways.
 }
