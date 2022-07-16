@@ -33,7 +33,5 @@ Imports:
     qusage,
     mclust,
     shinythemes,
-    shiny,
-    openxlsx,
-    XML
+    shiny
 URL: https://jianzou75.github.io/gull/
