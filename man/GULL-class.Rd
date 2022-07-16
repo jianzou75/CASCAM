@@ -5,9 +5,6 @@
 \alias{GULL-class}
 \alias{GULL}
 \title{The GULL class}
-\value{
-
-}
 \description{
 The GULL class
 }

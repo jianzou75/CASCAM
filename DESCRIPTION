@@ -10,7 +10,7 @@ License: GPL-3 | file LICENSE
 Depends: R (>= 4.0.5)
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.0
 biocViews:
 Imports:
     sparseLDA,
@@ -36,5 +36,6 @@ Imports:
     XML (<= 3.99-0.8),
     shinythemes,
     shiny
+extra-packages: any::rcmdcheck, any::XML
 URL: https://jianzou75.github.io/gull/
 VignetteBuilder: knitr

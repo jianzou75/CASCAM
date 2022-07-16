@@ -9,9 +9,6 @@ pathway_analysis(object)
 \arguments{
 \item{object}{A \code{GULL} object.}
 }
-\value{
-
-}
 \description{
 Pathway specific selection analysis
 }
