@@ -1,4 +1,5 @@
 url: https://jianzou75.github.io/gull/
 template:
   bootstrap: 5
+extra-packages: any::rcmdcheck, any::XML
 

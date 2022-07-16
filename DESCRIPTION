@@ -35,6 +35,5 @@ Imports:
     mclust,
     shinythemes,
     shiny
-extra-packages: any::rcmdcheck, any::XML
 URL: https://jianzou75.github.io/gull/
 VignetteBuilder: knitr
