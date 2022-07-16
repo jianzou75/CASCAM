@@ -33,7 +33,6 @@ Imports:
     fgsea,
     qusage,
     mclust,
-    XML (<= 3.99-0.8),
     shinythemes,
     shiny
 URL: https://jianzou75.github.io/gull/
