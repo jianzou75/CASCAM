@@ -27,7 +27,6 @@ Imports:
     grid,
     png,
     ggplotify,
-    DESeq2,
     Seurat,
     fgsea,
     qusage,
