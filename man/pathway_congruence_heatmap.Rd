@@ -7,7 +7,7 @@
 pathway_congruence_heatmap(object)
 }
 \arguments{
-\item{object}{A \code{GULL} object.}
+\item{object}{A \code{CASCAM} object.}
 }
 \value{
 

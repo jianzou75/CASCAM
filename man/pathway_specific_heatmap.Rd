@@ -7,7 +7,7 @@
 pathway_specific_heatmap(object, pathway_name)
 }
 \arguments{
-\item{object}{A \code{GULL} object.}
+\item{object}{A \code{CASCAM} object.}
 
 \item{pathway_name}{The interested pathway, which should be within the KEGG and Hallmark pathways.}
 }

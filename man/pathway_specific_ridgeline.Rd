@@ -7,7 +7,7 @@
 pathway_specific_ridgeline(object, interested_cells, pathway_name)
 }
 \arguments{
-\item{object}{A \code{GULL} object.}
+\item{object}{A \code{CASCAM} object.}
 
 \item{interested_cells}{A vector of interested cell lines.}
 

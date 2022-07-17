@@ -12,7 +12,7 @@ sda_model_cv(
 )
 }
 \arguments{
-\item{object}{A \code{GULL} object.}
+\item{object}{A \code{CASCAM} object.}
 
 \item{stop_vector}{A vector of negative values with its absolute value representing the number of genes selected for model training.}
 
@@ -21,7 +21,7 @@ sda_model_cv(
 \item{parallel_cores}{Number of cores for the parallel computation.}
 }
 \value{
-A \code{GULL} object with sda_model, cell_norm_data, tumor_norm_data, tumor_sda_project, and cell_sda_project slots.
+A \code{CASCAM} object with sda_model, cell_norm_data, tumor_norm_data, tumor_sda_project, and cell_sda_project slots.
 }
 \description{
 This function trains a sparse discriminant analysis model using tumor gene expression data with cross-validation for parameter selection.

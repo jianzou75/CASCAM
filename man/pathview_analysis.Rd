@@ -7,7 +7,7 @@
 pathview_analysis(object, interested_cell, pathway_name)
 }
 \arguments{
-\item{object}{A \code{GULL} object.}
+\item{object}{A \code{CASCAM} object.}
 
 \item{interested_cell}{A string of one interested cell line.}
 

@@ -1,6 +1,6 @@
-Package: GULL
+Package: CASCAM
 Type: Package
-Title: Genomics Congruence Framework for Cell Line Selection
+Title: Congruence Analysis and Selector of Cancer Models 
 Version: 0.1.0
 Author: Jian Zou
 Maintainer: Jian Zou <jian.zou@pitt.edu>

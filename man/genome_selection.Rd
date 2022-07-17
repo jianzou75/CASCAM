@@ -7,12 +7,12 @@
 genome_selection(object, R = 1000)
 }
 \arguments{
-\item{object}{A \code{GULL} object.}
+\item{object}{A \code{CASCAM} object.}
 
 \item{R}{The number of bootstrap replicates. R = 1000 by default.}
 }
 \value{
-A \code{GULL} object with genome-wide pre-selection related slots.
+A \code{CASCAM} object with genome-wide pre-selection related slots.
 }
 \description{
 Genome-wide pre-selection analysis

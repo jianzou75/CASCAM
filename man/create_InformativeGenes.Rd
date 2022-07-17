@@ -19,7 +19,7 @@ An \code{InformativeGenes} object.
 }
 \description{
 This function runs differential expression analysis (DESeq2) and gene set enrichment analysis (GSEA) to generate a InformativeGenes object,
-which is necessary for creating the GULL object.
+which is necessary for creating the CASCAM object.
 }
 \references{
 Love, Michael I., Wolfgang Huber, and Simon Anders. "Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2." Genome biology 15, no. 12 (2014): 1-21.
