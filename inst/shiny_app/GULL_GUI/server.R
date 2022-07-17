@@ -11,7 +11,7 @@ for(p in requiredBioconductor){
   library(p, character.only = TRUE)
 }
 
-library(GULL)
+library(CASCAM)
 set.seed(12345)
 load("./www/KEGG_name_ID_match.RData")
 
@@ -23,16 +23,16 @@ lsdata <- function (fnam = ".Rdata"){
 
 
 server <- function(input, output, session) {
-  output$select_GULL_object <- renderUI({
+  output$select_CASCAM_object <- renderUI({
     req(input$dataset$datapath)
-    selectInput(inputId = 'GULL_object', "Select the GULL object", choices = c("", lsdata(input$dataset$datapath)))
+    selectInput(inputId = 'CASCAM_object', "Select the CASCAM object", choices = c("", lsdata(input$dataset$datapath)))
   })
 
   observe({
-    req(input$dataset$datapath, input$GULL_object)
+    req(input$dataset$datapath, input$CASCAM_object)
     e <- new.env()
     name <- load(input$dataset$datapath, envir = e)
-    gull <- e[[input$GULL_object]]
+    CASCAM <- e[[input$CASCAM_object]]
 
     output$select_interested_pathway <- renderUI({
       req(pathway_result())
@@ -68,12 +68,12 @@ server <- function(input, output, session) {
     genome_result <- eventReactive(input$genome_analysis_start, {
       input$genome_analysis_start
 
-      genome_selection(gull)
+      genome_selection(CASCAM)
     })
     output$genome_visualize <- renderPlot({
-      gull <- genome_selection_visualize(genome_result())
-      plot_grid(gull@genome_figure$sda_project_position,
-                gull@genome_figure$sda_ds_ci_rank,
+      CASCAM <- genome_selection_visualize(genome_result())
+      plot_grid(CASCAM@genome_figure$sda_project_position,
+                CASCAM@genome_figure$sda_ds_ci_rank,
                 align = "h", axis = "bt", rel_widths = c(1.1, 1))
     }, height = session$clientData$output_genome_visualize_width/2)
     output$genome_text <- renderText({
@@ -184,8 +184,8 @@ server <- function(input, output, session) {
       height <- session$clientData$output_pathway_specific_heatmap_height
       pixelratio <- session$clientData$pixelratio
 
-      pathways <- c(qusage::read.gmt(system.file(package = 'GULL', 'extdata/c2.cp.kegg.v7.4.symbols.gmt')),
-                    qusage::read.gmt(system.file(package = 'GULL', 'extdata/h.all.v7.4.symbols.gmt')))
+      pathways <- c(qusage::read.gmt(system.file(package = 'CASCAM', 'extdata/c2.cp.kegg.v7.4.symbols.gmt')),
+                    qusage::read.gmt(system.file(package = 'CASCAM', 'extdata/h.all.v7.4.symbols.gmt')))
       gene_pathway <- intersect(rownames(pathway_result()@gene_ds[[pathway_result()@interested_subtype]]),
                                 pathways[[input$interested_pathway]])
 
@@ -218,8 +218,8 @@ server <- function(input, output, session) {
     height <- session$clientData$output_pathway_specific_distribution_height
     pixelratio <- session$clientData$pixelratio
 
-    pathways <- c(qusage::read.gmt(system.file(package = 'GULL', 'extdata/c2.cp.kegg.v7.4.symbols.gmt')),
-                  qusage::read.gmt(system.file(package = 'GULL', 'extdata/h.all.v7.4.symbols.gmt')))
+    pathways <- c(qusage::read.gmt(system.file(package = 'CASCAM', 'extdata/c2.cp.kegg.v7.4.symbols.gmt')),
+                  qusage::read.gmt(system.file(package = 'CASCAM', 'extdata/h.all.v7.4.symbols.gmt')))
     gene_pathway <- intersect(rownames(pathway_result()@gene_ds[[pathway_result()@interested_subtype]]),
                               pathways[[input$interested_pathway]])
 

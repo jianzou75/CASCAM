@@ -7,14 +7,14 @@
 #' This function trains a sparse discriminant analysis model using tumor gene expression data. The parameters can be self-determined or
 #' determined by the cross-validation. If cross-validation is prefered, users can refer to the function \link{sda_model_cv}.
 #'
-#' @param object A \code{GULL} object.
+#' @param object A \code{CASCAM} object.
 #' @param stop A negative value with its absolute value representing the number of genes selected for model training.
 #' @param lambda A parameter for the L2-norm for elastic net regression.
 #'
 #' @import sparseLDA
 #' @importFrom mclust unmap
 #'
-#' @return A \code{GULL} object with sda_model, cell_norm_data, tumor_norm_data, tumor_sda_project, and cell_sda_project slots.
+#' @return A \code{CASCAM} object with sda_model, cell_norm_data, tumor_norm_data, tumor_sda_project, and cell_sda_project slots.
 #'
 #' @export
 #'
@@ -51,7 +51,7 @@ sda_model <- function(object, stop = NULL, lambda = NULL){
 #' This function trains a sparse discriminant analysis model using tumor gene expression data with cross-validation for parameter selection.
 #'  Users can refer to the function \link{sda_model} if parameters are known.
 #'
-#' @param object A \code{GULL} object.
+#' @param object A \code{CASCAM} object.
 #' @param stop_vector A vector of negative values with its absolute value representing the number of genes selected for model training.
 #' @param lambda_vector A vector of values for the L2-norm for elastic net regression.
 #' @param parallel_cores Number of cores for the parallel computation.
@@ -60,7 +60,7 @@ sda_model <- function(object, stop = NULL, lambda = NULL){
 #' @import doParallel
 #' @import sparseLDA
 #'
-#' @return A \code{GULL} object with sda_model, cell_norm_data, tumor_norm_data, tumor_sda_project, and cell_sda_project slots.
+#' @return A \code{CASCAM} object with sda_model, cell_norm_data, tumor_norm_data, tumor_sda_project, and cell_sda_project slots.
 #' @export
 #'
 #' @examples
@@ -98,12 +98,12 @@ sda_model_cv <- function(object, stop_vector = NULL, lambda_vector = NULL, paral
 
 #' Genome-wide pre-selection analysis
 #'
-#' @param object A \code{GULL} object.
+#' @param object A \code{CASCAM} object.
 #' @param R The number of bootstrap replicates. R = 1000 by default.
 #'
 #' @import boot
 #'
-#' @return A \code{GULL} object with genome-wide pre-selection related slots.
+#' @return A \code{CASCAM} object with genome-wide pre-selection related slots.
 #' @export
 #'
 #' @examples

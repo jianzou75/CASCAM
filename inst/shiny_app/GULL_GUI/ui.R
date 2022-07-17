@@ -21,9 +21,9 @@ intro_panel <- tabPanel("Introduction",
 ## Genome Panel
 genome_input <- sidebarPanel(
   h4("Data input"),
-  fileInput("dataset", "Choose .RData including an GULL object.",
+  fileInput("dataset", "Choose .RData including an CASCAM object.",
             accept = ".RData"),
-  uiOutput('select_GULL_object'),
+  uiOutput('select_CASCAM_object'),
 
   actionButton("genome_analysis_start", "Submit")
 )

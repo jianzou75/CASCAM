@@ -27,7 +27,7 @@ InformativeGenes <- methods::setClass(
 #' Create an InformativeGenes object
 #'
 #' This function runs differential expression analysis (DESeq2) and gene set enrichment analysis (GSEA) to generate a InformativeGenes object,
-#' which is necessary for creating the GULL object.
+#' which is necessary for creating the CASCAM object.
 #'
 #' @param tumor_ct a data frame or matrix of the un-normalized (estimated) counts of sequencing reads or fragments from the tumor data with
 #'        Rows for genes with row names of HGNC gene symbols and columns for samples.
@@ -66,8 +66,8 @@ create_InformativeGenes <- function(tumor_ct, tumor_lab, interested_subtype) {
   de$delabel <- NA
   de$delabel[de$diffexpressed != "NO"] <- de$gene_symbol[de$diffexpressed != "NO"]
 
-  pathways <- c(qusage::read.gmt(system.file(package = "GULL", "extdata/c2.cp.kegg.v7.4.symbols.gmt")),
-                qusage::read.gmt(system.file(package = "GULL", "extdata/h.all.v7.4.symbols.gmt")))
+  pathways <- c(qusage::read.gmt(system.file(package = "CASCAM", "extdata/c2.cp.kegg.v7.4.symbols.gmt")),
+                qusage::read.gmt(system.file(package = "CASCAM", "extdata/h.all.v7.4.symbols.gmt")))
   gene_rank <- de$log2FoldChange
   names(gene_rank) <- de$gene_symbol
   fgseaRes <- data.frame(fgsea::fgsea(pathways, gene_rank, minSize = 15, maxSize = 500))
@@ -79,7 +79,7 @@ create_InformativeGenes <- function(tumor_ct, tumor_lab, interested_subtype) {
 }
 
 
-#' The GULL class
+#' The CASCAM class
 #'
 #' @slot tumor_aligned_data A data frame of aligned tumor gene expression with rows for genes and columns for samples.
 #' @slot tumor_label A vector of strings indicating the labels of the tumor samples.
@@ -108,8 +108,8 @@ create_InformativeGenes <- function(tumor_ct, tumor_lab, interested_subtype) {
 #' @export
 #'
 #' @examples
-GULL <- methods::setClass(
-  "GULL",
+CASCAM <- methods::setClass(
+  "CASCAM",
   slots = c(
     tumor_aligned_data = "data.frame",
     tumor_label = "character",
@@ -138,9 +138,9 @@ GULL <- methods::setClass(
 )
 
 
-#' Create a GULL object
+#' Create a CASCAM object
 #'
-#' This function creates a \code{GULL} object for the downstream analysis. The data sets of tumor aligned gene expression data with the tumor subtype labels and
+#' This function creates a \code{CASCAM} object for the downstream analysis. The data sets of tumor aligned gene expression data with the tumor subtype labels and
 #' cell line aligned gene expression data are needed as the input. Celligner is highly recommended to align the tumor and cell line data.
 #'
 #' @param tumor_aligned_data A data frame of aligned tumor gene expression with rows for genes and columns for samples.
@@ -148,17 +148,17 @@ GULL <- methods::setClass(
 #' @param cell_aligned_data A data.frame of aligned cell line gene expression with rows for genes and columns for samples.
 #' @param info_object An \code{InformativeGenes} object for the study.
 #'
-#' @return A \code{GULL} object.
+#' @return A \code{CASCAM} object.
 #' @export
 #'
 #' @examples
-create_GULL <- function(tumor_aligned_data, tumor_label, cell_aligned_data, info_object) {
+create_CASCAM <- function(tumor_aligned_data, tumor_label, cell_aligned_data, info_object) {
   DEG <- c(na.omit(info_object@DEA$delabel))
   DEG <- Reduce(intersect, list(DEG, rownames(tumor_aligned_data), rownames(cell_aligned_data)))
   tumor_aligned_data <- tumor_aligned_data[DEG,]
   cell_aligned_data <- cell_aligned_data[DEG,]
 
-  object <- methods::new(Class = "GULL",
+  object <- methods::new(Class = "CASCAM",
                          tumor_aligned_data = tumor_aligned_data, tumor_label = tumor_label,
                          cell_aligned_data = cell_aligned_data, info_object)
 

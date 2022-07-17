@@ -4,7 +4,7 @@
 
 #' Pathway specific selection analysis
 #'
-#' @param object A \code{GULL} object.
+#' @param object A \code{CASCAM} object.
 #'
 #' @return
 #' @export
@@ -24,8 +24,8 @@ pathway_analysis <- function(object){
   gene_ds <- lapply(subtype_levels, function(t) apply(cell_expr, 2, function(x) (x - center_location[,t])/pool_sd)); names(gene_ds) = subtype_levels
 
   ## pathway specific deviance score
-  pathways <- c(qusage::read.gmt(system.file(package = 'GULL', 'extdata/c2.cp.kegg.v7.4.symbols.gmt')),
-                qusage::read.gmt(system.file(package = 'GULL', 'extdata/h.all.v7.4.symbols.gmt')))
+  pathways <- c(qusage::read.gmt(system.file(package = 'CASCAM', 'extdata/c2.cp.kegg.v7.4.symbols.gmt')),
+                qusage::read.gmt(system.file(package = 'CASCAM', 'extdata/h.all.v7.4.symbols.gmt')))
   pathway_ds_subtype1 <- pathway_ds_subtype2 <- c();                       ## PDS : pathway deviance score
   path_row_names <- c()
   for (i in 1:length(pathways)){
@@ -54,7 +54,7 @@ pathway_analysis <- function(object){
 #'
 #' A heatmap showing the congruence between the cell lines and tumors for detailed pathways.
 #'
-#' @param object A \code{GULL} object.
+#' @param object A \code{CASCAM} object.
 #'
 #' @return
 #' @export
@@ -85,7 +85,7 @@ pathway_congruence_heatmap <- function(object){
 
 #' Pathway specific heatmap
 #'
-#' @param object A \code{GULL} object.
+#' @param object A \code{CASCAM} object.
 #' @param pathway_name The interested pathway, which should be within the KEGG and Hallmark pathways.
 #'
 #' @import reshape2
@@ -101,8 +101,8 @@ pathway_specific_heatmap <- function(object, pathway_name){
                 "#FF1493","#0000CD","#008B8B","#FFE4B5","#8A2BE2","#228B22","#E9967A","#4682B4","#32CD32","#F0E68C","#FFFFE0","#EE82EE",
                 "#FF6347","#6A5ACD","#9932CC","#8B008B","#8B4513","#DEB887")
 
-  pathways <- c(qusage::read.gmt(system.file(package = 'GULL', 'extdata/c2.cp.kegg.v7.4.symbols.gmt')),
-                qusage::read.gmt(system.file(package = 'GULL', 'extdata/h.all.v7.4.symbols.gmt')))
+  pathways <- c(qusage::read.gmt(system.file(package = 'CASCAM', 'extdata/c2.cp.kegg.v7.4.symbols.gmt')),
+                qusage::read.gmt(system.file(package = 'CASCAM', 'extdata/h.all.v7.4.symbols.gmt')))
   gene_pathway <- intersect(rownames(object@gene_ds[[object@interested_subtype]]),
                             pathways[[pathway_name]])
   gene_pathway <- gene_pathway[order(object@DEA[gene_pathway, 1])]
@@ -126,7 +126,7 @@ pathway_specific_heatmap <- function(object, pathway_name){
 
 #' Pathway specific gene expression ridgeline
 #'
-#' @param object A \code{GULL} object.
+#' @param object A \code{CASCAM} object.
 #' @param interested_cells A vector of interested cell lines.
 #' @param pathway_name The interested pathway, which should be within the KEGG and Hallmark pathways.
 #'
@@ -147,8 +147,8 @@ pathway_specific_ridgeline <- function(object, interested_cells, pathway_name){
                 "#FF1493","#0000CD","#008B8B","#FFE4B5","#8A2BE2","#228B22","#E9967A","#4682B4","#32CD32","#F0E68C","#FFFFE0","#EE82EE",
                 "#FF6347","#6A5ACD","#9932CC","#8B008B","#8B4513","#DEB887")
 
-  pathways <- c(qusage::read.gmt(system.file(package = 'GULL', 'extdata/c2.cp.kegg.v7.4.symbols.gmt')),
-                qusage::read.gmt(system.file(package = 'GULL', 'extdata/h.all.v7.4.symbols.gmt')))
+  pathways <- c(qusage::read.gmt(system.file(package = 'CASCAM', 'extdata/c2.cp.kegg.v7.4.symbols.gmt')),
+                qusage::read.gmt(system.file(package = 'CASCAM', 'extdata/h.all.v7.4.symbols.gmt')))
   gene_pathway <- intersect(rownames(object@gene_ds[[object@interested_subtype]]),
                             pathways[[pathway_name]])
   gene_pathway <- gene_pathway[order(object@DEA[gene_pathway, 1])]
@@ -202,7 +202,7 @@ see_pathview <- function(..., save_image = FALSE){
 
 #' Pathview of the interested cell in interested pathway
 #'
-#' @param object A \code{GULL} object.
+#' @param object A \code{CASCAM} object.
 #' @param interested_cell A string of one interested cell line.
 #' @param pathway_name The interested pathway, which should be within the KEGG and Hallmark pathways.
 #'
@@ -211,7 +211,7 @@ see_pathview <- function(..., save_image = FALSE){
 #' @return
 #' @export
 pathview_analysis <- function(object, interested_cell, pathway_name){
-  load(system.file(package = 'GULL', 'extdata/KEGG_name_ID_match.RData'))
+  load(system.file(package = 'CASCAM', 'extdata/KEGG_name_ID_match.RData'))
   kegg_id = KEGG_name_ID_match$gs_exact_source[KEGG_name_ID_match$gs_name == pathway_name]
 
   pathview_input <- object@gene_ds[[object@interested_subtype]][,interested_cell]

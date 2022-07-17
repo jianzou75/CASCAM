@@ -9,6 +9,9 @@ genome_selection_visualize(object)
 \arguments{
 \item{object}{}
 }
+\value{
+
+}
 \description{
 Visualization of genome-wide pre-selection analysis
 }

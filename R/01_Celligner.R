@@ -16,9 +16,9 @@
 #' @references
 #' Warren, Allison, Yejia Chen, Andrew Jones, Tsukasa Shibue, William C. Hahn, Jesse S. Boehm, Francisca Vazquez, Aviad Tsherniak, and James M. McFarland. 2021. “Global Computational Alignment of Tumor and Cell Line Transcriptional Profiles.” Nature Communications 12 (1): 22. https://doi.org/10.1038/s41467-020-20294-x.
 Celligner <- function(tumor, cell){
-  source(system.file(package = 'GULL', 'extdata/Celligner_helpers.R'))
-  source(system.file(package = 'GULL', 'extdata/analysis_helpers.R'))
-  source(system.file(package = 'GULL', 'extdata/celligner.R'))
+  source(system.file(package = 'CASCAM', 'extdata/Celligner_helpers.R'))
+  source(system.file(package = 'CASCAM', 'extdata/analysis_helpers.R'))
+  source(system.file(package = 'CASCAM', 'extdata/celligner.R'))
 
   tumor <- data.frame(tumor); cell <- data.frame(cell)
 
