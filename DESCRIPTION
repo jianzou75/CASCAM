@@ -35,5 +35,6 @@ Imports:
     mclust,
     shinythemes,
     shiny
-URL: https://jianzou75.github.io/gull/
+URL: https://jianzou75.github.io/gull/,
+    https://jianzou75.github.io/CASCAM/
 VignetteBuilder: knitr
