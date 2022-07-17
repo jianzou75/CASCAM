@@ -1,2 +1,2 @@
-# GULL (Genomics congrUence framework for ceLL line selection)
+# CASCAM (Congruence Analysis and Selector of CAncer Models)
 
