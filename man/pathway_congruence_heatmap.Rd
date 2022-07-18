@@ -9,9 +9,6 @@ pathway_congruence_heatmap(object)
 \arguments{
 \item{object}{A \code{CASCAM} object.}
 }
-\value{
-
-}
 \description{
 A heatmap showing the congruence between the cancer models and tumors for detailed pathways.
 }

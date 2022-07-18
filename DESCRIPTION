@@ -36,5 +36,5 @@ Imports:
     shinythemes,
     shiny,
     cowplot
-URL:https://jianzou75.github.io/CASCAM/
+URL: https://jianzou75.github.io/CASCAM/
 VignetteBuilder: knitr
