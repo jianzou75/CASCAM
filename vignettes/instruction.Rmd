@@ -7,3 +7,41 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+This package is written around a S4 object `CASCAM`, where the analysis results including the figures are stored. For now, our framework is only 
+limited to the bulk RNA-Seq data, and it is a three-step framework which should be run sequentially.
+
+* Step 1: Data preparation
+* Step 2: Genome-wide cancer model pre-selection
+* Step 3: Pathway specific exploration
+
+In this tutorial, we use breast cancer (BRCA) analysis as an example. There are two breast cancer histology subtypes -- 
+invasive lobular carcinoma (ILC) and invasive (infiltrating) ductal carcinoma (IDC), and ILC is of interest in this study.
+
+
+## Data preparation
+In the data preparation step, the following data is necessary --
+
+* `tumor_log_tpm`: A data set of tumor gene expression on log scale (log2-TPM preferred). 
+It is highly recommend to merge the interested tumor samples with the pan-cancer 
+dataset (such as TCGA) to benefit from the large sample size, which has shown the outperformance 
+comparing with the small sample size.
+* `camod_log_tpm`: A data set of cancer model gene expression on log scale (log2-TPM preferred). Similarly, better performance can also come
+from the larger sample size.
+* `tumor_ct`: A data set of the un-normalized (estimated) counts of sequencing reads or fragments from the tumor data.
+* `tumor_label`: A vector of sample labels of the tumor count data (binary class, interested v.s. uninterested).
+
+### Tumor and cancer model alignment
+Celligner is applied in our framework to allow the tumors and cancer models directly comparable. Users can refer to 
+[this paper](https://www.nature.com/articles/s41467-020-20294-x) for more information.
+
+```{r eval=FALSE}
+aligned <- Celligner(tumor_log_tpm, camod_log_tpm)
+```
+
+`Celligner` returns a Seurat object with the aligned data included, and the aligned data for tumor and cancer models of interest (`tumor_aligned` and `camod_aligned`) 
+can be extracted.
+
+
+
+
+
