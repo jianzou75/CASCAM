@@ -2,14 +2,14 @@
 % Please edit documentation in R/04_pathway_analysis.R
 \name{pathview_analysis}
 \alias{pathview_analysis}
-\title{Pathview of the interested cell in interested pathway}
+\title{Pathview of the interested camod in interested pathway}
 \usage{
-pathview_analysis(object, interested_cell, pathway_name)
+pathview_analysis(object, interested_camod, pathway_name)
 }
 \arguments{
 \item{object}{A \code{CASCAM} object.}
 
-\item{interested_cell}{A string of one interested cell line.}
+\item{interested_camod}{A string of one interested cancer model.}
 
 \item{pathway_name}{The interested pathway, which should be within the KEGG and Hallmark pathways.}
 }
@@ -17,5 +17,5 @@ pathview_analysis(object, interested_cell, pathway_name)
 
 }
 \description{
-Pathview of the interested cell in interested pathway
+Pathview of the interested camod in interested pathway
 }

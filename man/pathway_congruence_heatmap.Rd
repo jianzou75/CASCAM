@@ -13,5 +13,5 @@ pathway_congruence_heatmap(object)
 
 }
 \description{
-A heatmap showing the congruence between the cell lines and tumors for detailed pathways.
+A heatmap showing the congruence between the cancer models and tumors for detailed pathways.
 }

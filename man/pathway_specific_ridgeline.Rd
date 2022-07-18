@@ -4,12 +4,12 @@
 \alias{pathway_specific_ridgeline}
 \title{Pathway specific gene expression ridgeline}
 \usage{
-pathway_specific_ridgeline(object, interested_cells, pathway_name)
+pathway_specific_ridgeline(object, interested_camods, pathway_name)
 }
 \arguments{
 \item{object}{A \code{CASCAM} object.}
 
-\item{interested_cells}{A vector of interested cell lines.}
+\item{interested_camods}{A vector of interested cancer models.}
 
 \item{pathway_name}{The interested pathway, which should be within the KEGG and Hallmark pathways.}
 }

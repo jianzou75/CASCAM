@@ -42,8 +42,8 @@ genome_panel <- tabPanel("Genome-wide pre-selection",
 pathway_input <- sidebarPanel(
   conditionalPanel(condition = "input.pathway == 1",uiOutput('download')),
   conditionalPanel(condition = "input.pathway == 2",uiOutput('select_interested_pathway')),
-  conditionalPanel(condition = "input.pathway == 3",uiOutput('select_interested_pathway2'),uiOutput('select_interested_cell')),
-  conditionalPanel(condition = "input.pathway == 4",uiOutput('select_interested_pathway3'), uiOutput('select_interested_cell2'))
+  conditionalPanel(condition = "input.pathway == 3",uiOutput('select_interested_pathway2'),uiOutput('select_interested_camod')),
+  conditionalPanel(condition = "input.pathway == 4",uiOutput('select_interested_pathway3'), uiOutput('select_interested_camod2'))
 )
 pathway_figure <- mainPanel(
   h3("Pathway specific analysis"),

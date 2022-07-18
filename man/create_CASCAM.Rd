@@ -4,14 +4,14 @@
 \alias{create_CASCAM}
 \title{Create a CASCAM object}
 \usage{
-create_CASCAM(tumor_aligned_data, tumor_label, cell_aligned_data, info_object)
+create_CASCAM(tumor_aligned_data, tumor_label, camod_aligned_data, info_object)
 }
 \arguments{
 \item{tumor_aligned_data}{A data frame of aligned tumor gene expression with rows for genes and columns for samples.}
 
 \item{tumor_label}{A vector of strings indicating the labels of the tumor samples.}
 
-\item{cell_aligned_data}{A data.frame of aligned cell line gene expression with rows for genes and columns for samples.}
+\item{camod_aligned_data}{A data.frame of aligned cancer model gene expression with rows for genes and columns for samples.}
 
 \item{info_object}{An \code{InformativeGenes} object for the study.}
 }
@@ -20,5 +20,5 @@ A \code{CASCAM} object.
 }
 \description{
 This function creates a \code{CASCAM} object for the downstream analysis. The data sets of tumor aligned gene expression data with the tumor subtype labels and
-cell line aligned gene expression data are needed as the input. Celligner is highly recommended to align the tumor and cell line data.
+cancer model aligned gene expression data are needed as the input. Celligner is highly recommended to align the tumor and cancer model data.
 }

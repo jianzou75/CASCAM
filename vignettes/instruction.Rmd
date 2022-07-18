@@ -5,7 +5,14 @@ vignette: >
   %\VignetteIndexEntry{Introduction to CASCAM package}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+fig_width: 6 
+fig_height: 4 
 ---
+
+```{r setup, include=FALSE}
+library(CASCAM)
+```
+
 
 This package is written around a S4 object `CASCAM`, where the analysis results including the figures are stored. For now, our framework is only 
 limited to the bulk RNA-Seq data, and it is a three-step framework which should be run sequentially.
@@ -25,16 +32,18 @@ In the data preparation step, the following data is necessary --
 It is highly recommend to merge the interested tumor samples with the pan-cancer 
 dataset (such as TCGA) to benefit from the large sample size, which has shown the outperformance 
 comparing with the small sample size.
+* `tumor_label`: A vector of sample labels of the tumor log tpm data (binary class, interested v.s. uninterested).
 * `camod_log_tpm`: A data set of cancer model gene expression on log scale (log2-TPM preferred). Similarly, better performance can also come
 from the larger sample size.
 * `tumor_ct`: A data set of the un-normalized (estimated) counts of sequencing reads or fragments from the tumor data.
-* `tumor_label`: A vector of sample labels of the tumor count data (binary class, interested v.s. uninterested).
+* `tumor_label2`: A vector of sample labels of the tumor count data (binary class, interested v.s. uninterested).
 
 ### Tumor and cancer model alignment
 Celligner is applied in our framework to allow the tumors and cancer models directly comparable. Users can refer to 
-[this paper](https://www.nature.com/articles/s41467-020-20294-x) for more information.
+[this paper](https://www.nature.com/articles/s41467-020-20294-x) for more information. To simplify the process, we use 
+the default parameters setting in Celligner paper. This step may take some time (~ 30 min). 
 
-```{r eval=FALSE}
+```{r eval = FALSE}
 aligned <- Celligner(tumor_log_tpm, camod_log_tpm)
 ```
 
@@ -42,6 +51,66 @@ aligned <- Celligner(tumor_log_tpm, camod_log_tpm)
 can be extracted.
 
 
+### Differential expression analysis
+Informative genes are then detected by using the tumor count matrix. `DESeq2` and `fgsea` are implied in our framework to identify the 
+differential expression genes and the enriched pathways (Hallmark and KEGG).
+
+```{r eval = FALSE}
+gene_info <- create_InformativeGenes(tumor_ct, tumor_label2, "ILC")
+```
+
+
+### Create CASCAM object
+A `CASCAM` is then created for the downstream analysis.
+
+```{r eval = FALSE}
+CASCAM_eg <- create_CASCAM(tumor_aligned, tumor_label, camod_aligned, gene_info)
+```
+
+
+## Genome-wide cancer model pre-selection
+### Sparse discriminant analysis (SDA) model trainining
+The first step in this section is to train the SDA model for (1) high dimensionality; (2) data sparsity; 
+(3) classification assignment probabilities.
+
+```{r eval = FALSE}
+CASCAM_eg <- sda_model(CASCAM_eg)
+```
+
+By default, 1/20 of the genes are selected for the model, and the L2-norm parameter is pre-set to 1e-4. Users can 
+provide their own choics or train the model through cross-validation. Parallel computation is available in our cross-validation function.
+
+```{r eval = FALSE}
+CASCAM_eg <- sda_model_cv(CASCAM_eg)
+```
+
+Starting from here, users can store the `CASCAM_eg` object into an RData file and call `run_CASCAM_app()` for interactive exploration. The next 
+step is to calculate the genome-related measurements. 
+
+```{r eval = FALSE}
+CASCAM_eg <- genome_selection(CASCAM_eg)
+CASCAM_eg <- genome_selection_visualize(CASCAM_eg)
+```
+
+Users can use SDA projected positions `CASCAM_eg@genome_figure$sda_project_position` and 
+the confidence intervals `CASCAM_eg@genome_figure$sda_ds_ci_rank` to evaluate the cancer models visually.
+
+
+## Pathway specific exploration
+Pathway specific exploration is performed based on genome-wide pre-selected cancer models. Pathway-related measurements are at first calculated.
+
+```{r eval = FALSE}
+CASCAM_eg <- pathway_analysis(CASCAM_eg)
+```
+
+The downstream exploration then goes as follows --
+
+* `pathway_congruence_heatmap`: Explore the performance of selected cancer models across all the available pathways using pathway congruence heatmap.
+* `pathway_specific_heatmap`: Select the interested pathway and analyze the performance of selected cancer models across the genes within that pathway using pathway specific heatmap.
+* `pathway_specific_ridgeline`: Determine the subset of selected cancer models to visualize their positions for each gene within that pathway using pathway specific ridgeline .
+* `pathview_analysis`: Choose one cancer model and visualize its topological structure for final decision (if the pathway is from KEGG) using pathview.
+
+It is highly recommended to performance the exploration using the Shiny app as it provides better experience of iterative exploration.
 
 
 

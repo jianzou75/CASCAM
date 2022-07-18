@@ -18,31 +18,31 @@ The CASCAM class
 
 \item{\code{tumor_label}}{A vector of strings indicating the labels of the tumor samples.}
 
-\item{\code{cell_aligned_data}}{A data.frame of aligned cell line gene expression with rows for genes and columns for samples.}
+\item{\code{camod_aligned_data}}{A data.frame of aligned cancer model gene expression with rows for genes and columns for samples.}
 
 \item{\code{sda_model}}{A list for the SDA model trained by the tumor data.}
 
 \item{\code{tumor_norm_data}}{A data frame of normalized \emph{tumor_aligned_data} with rows for samples and columns for genes.}
 
-\item{\code{cell_norm_data}}{A data frame of normalized \emph{cell_aligned_data} with rows for samples and columns for genes.}
+\item{\code{camod_norm_data}}{A data frame of normalized \emph{camod_aligned_data} with rows for samples and columns for genes.}
 
 \item{\code{tumor_sda_project}}{A one column matrix showing the SDA projected vector of tumor gene expression.}
 
-\item{\code{cell_sda_project}}{A one column matrix showing the SDA projected vector of tumor gene expression.}
+\item{\code{camod_sda_project}}{A one column matrix showing the SDA projected vector of cancer model gene expression.}
 
-\item{\code{sda_ds}}{A data frame for SDA deviance score with the rows for cells and columns for tumor subtypes.}
+\item{\code{sda_ds}}{A data frame for SDA deviance score with the rows for camods and columns for tumor subtypes.}
 
-\item{\code{sda_lds}}{A data frame for SDA log deviance score with the rows for cells and columns for tumor subtypes.}
+\item{\code{sda_lds}}{A data frame for SDA log deviance score with the rows for camods and columns for tumor subtypes.}
 
-\item{\code{sda_predict_prob}}{A two column matrix showing the SDA assignment probabilities for cells.}
+\item{\code{sda_predict_prob}}{A two column matrix showing the SDA assignment probabilities for camods.}
 
-\item{\code{sda_ds_pval}}{A two column matrix showing the p-values of SDA deviance scores for cells.}
+\item{\code{sda_ds_pval}}{A two column matrix showing the p-values of SDA deviance scores for camods.}
 
 \item{\code{sda_lds_ci}}{A list of two matrices showing the 95\% confidence intervals of \emph{sda_lds}.}
 
 \item{\code{genome_figure}}{A list of two ggplot2 figures for the genome-wide pre-selection (distribution and confidence interval).}
 
-\item{\code{selected_cells}}{The vector of genome-wide selected cell lines representing the interested tumor subtype by \emph{sda_predict_prob} and \emph{sda_ds_pval}.}
+\item{\code{selected_camods}}{The vector of genome-wide selected cancer models representing the interested tumor subtype by \emph{sda_predict_prob} and \emph{sda_ds_pval}.}
 
 \item{\code{gene_ds}}{A list of two matrices showing the gene-specific deviance score.}
 
@@ -56,6 +56,6 @@ The CASCAM class
 
 \item{\code{pathway_gene_ridgeline}}{A ggplot2 object for the pathway specific gene expression ridgeline.}
 
-\item{\code{pathview_figure}}{A pathview figure for one specific pathway and one specific cell line.}
+\item{\code{pathview_figure}}{A pathview figure for one specific pathway and one specific cancer model.}
 }}
 

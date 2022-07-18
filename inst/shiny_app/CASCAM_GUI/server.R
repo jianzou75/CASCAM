@@ -46,10 +46,10 @@ server <- function(input, output, session) {
                   choices =  c("", pathway_result()@available_pathways), selected = input$interested_pathway)
     })
 
-   output$select_interested_cell <- renderUI({
+   output$select_interested_camod <- renderUI({
       req(pathway_result(), input$interested_pathway)
-      selectizeInput(inputId = 'interested_cell', "Select the interested biological models",
-                     choices =  c("", pathway_result()@selected_cells), multiple = TRUE, options = list(maxItems = 5))
+      selectizeInput(inputId = 'interested_camod', "Select the interested cancer models",
+                     choices =  c("", pathway_result()@selected_camods), multiple = TRUE, options = list(maxItems = 5))
     })
 
    output$select_interested_pathway3 <- renderUI({
@@ -58,10 +58,10 @@ server <- function(input, output, session) {
                  choices =  c("", pathway_result()@available_pathways), selected = input$interested_pathway)
    })
 
-   output$select_interested_cell2 <- renderUI({
+   output$select_interested_camod2 <- renderUI({
      req(pathway_result(), input$interested_pathway)
-     selectInput(inputId = 'interested_cell2', "Select the interested biological model",
-                 choices =  c("", pathway_result()@selected_cells))
+     selectInput(inputId = 'interested_camod2', "Select the interested cancer model",
+                 choices =  c("", pathway_result()@selected_camods))
    })
 
     ## Genome analysis
@@ -105,7 +105,7 @@ server <- function(input, output, session) {
                                  pathway_result()@sda_predict_prob[,uninterested_subtype],
                                  pathway_result()@sda_ds_pval[,interested_subtype],
                                  pathway_result()@sda_ds_pval[,uninterested_subtype])
-      colnames(genome_frame) <- c("cells", paste0("SDA_DS_",interested_subtype),
+      colnames(genome_frame) <- c("camods", paste0("SDA_DS_",interested_subtype),
                                   paste0("SDA_DS_",uninterested_subtype), paste0("SDA_P_",interested_subtype),
                                   paste0("SDA_P_",uninterested_subtype), paste0("SDA_DS_pval_",interested_subtype),
                                   paste0("SDA_DS_pval_",uninterested_subtype))
@@ -141,7 +141,7 @@ server <- function(input, output, session) {
 
     output$pathway_congruence_heatmap_text <- renderText({
       req(pathway_result())
-      "The heatmap below shows a general overview of the congruence of the cell lines to the tumor centers in different avaiable pathways.
+      "The heatmap below shows a general overview of the congruence of the cancer models to the tumor centers in different avaiable pathways.
        The first row represents the genome-wide deviance score (the smaller, the better).
        Pathway_Size shows the number of genes included for each pathway.
        NES shows the normalized enrichment score obtained from GSEA by inputting the log fold change of the tumor data. Positive means interested subtype is upregulated comparing to uninterested one; negative means interested subtype is downregulated.
@@ -174,7 +174,7 @@ server <- function(input, output, session) {
     output$pathway_specific_heatmap_text <- renderText({
       req(input$interested_pathway)
       paste0("The heatmap below shows the gene specific deviance score for the differential expression genes, which is the smaller (more red) the better, in ", input$interested_pathway,
-             " among the genome-wide pre-filtered cell lines. The first row shows the pathway specific deviance score.")
+             " among the genome-wide pre-filtered cancer models. The first row shows the pathway specific deviance score.")
     })
 
     output$pathway_specific_heatmap <- renderImage({
@@ -206,13 +206,13 @@ server <- function(input, output, session) {
     }, deleteFile = TRUE)
 
    output$pathway_specific_distribution_text <- renderText({
-     req(input$interested_cell, input$interested_pathway2)
+     req(input$interested_camod, input$interested_pathway2)
       paste0("The ridgeline figure below shows the detailed distribution on the differential expression genes in ", input$interested_pathway,
-             " among the genome-wide pre-filtered cell lines. The genes are sorted by the adjusted p-value in DEA from the smallest to the largest.")
+             " among the genome-wide pre-filtered cancer models. The genes are sorted by the adjusted p-value in DEA from the smallest to the largest.")
     })
 
   output$pathway_specific_distribution <- renderImage({
-    req(input$interested_cell, input$interested_pathway2)
+    req(input$interested_camod, input$interested_pathway2)
 
     width  <- session$clientData$output_pathway_specific_distribution_width
     height <- session$clientData$output_pathway_specific_distribution_height
@@ -228,7 +228,7 @@ server <- function(input, output, session) {
     png(outfile, width = width*pixelratio, height = width/20 * length(gene_pathway) * pixelratio,
         res = 72*pixelratio)
     plot(pathway_specific_ridgeline(pathway_result(), pathway_name = input$interested_pathway2,
-                                    interested_cells = input$interested_cell)@pathway_gene_ridgeline)
+                                    interested_camods = input$interested_camod)@pathway_gene_ridgeline)
     dev.off()
 
     ### Return a list containing the filename
@@ -241,8 +241,8 @@ server <- function(input, output, session) {
 
 
   output$pathway_specific_pathview <- renderImage({
-    req(input$interested_cell2, input$interested_pathway3, pathway_result())
-    pathview_input <- pathway_result()@gene_ds[[pathway_result()@interested_subtype]][,input$interested_cell2]
+    req(input$interested_camod2, input$interested_pathway3, pathway_result())
+    pathview_input <- pathway_result()@gene_ds[[pathway_result()@interested_subtype]][,input$interested_camod2]
     kegg_id = KEGG_name_ID_match$gs_exact_source[KEGG_name_ID_match$gs_name == input$interested_pathway3]
 
 

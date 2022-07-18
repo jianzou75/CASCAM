@@ -1,6 +1,6 @@
 ##################################################################################################################################
 # 03: Genome-wide pre-selection analysis
-# The step of genome-wide analysis, and all the cell lines are fed into the framework for pre-selection.
+# The step of genome-wide analysis, and all the cancer models are fed into the framework for pre-selection.
 
 #' SDA model trained by tumor gene expression
 #'
@@ -14,7 +14,7 @@
 #' @import sparseLDA
 #' @importFrom mclust unmap
 #'
-#' @return A \code{CASCAM} object with sda_model, cell_norm_data, tumor_norm_data, tumor_sda_project, and cell_sda_project slots.
+#' @return A \code{CASCAM} object with sda_model, camod_norm_data, tumor_norm_data, tumor_sda_project, and camod_sda_project slots.
 #'
 #' @export
 #'
@@ -31,16 +31,16 @@ sda_model <- function(object, stop = NULL, lambda = NULL){
 
   subtype_levels <- levels(factor(object@tumor_label))
   tumor_norm <- sparseLDA::normalize(t(object@tumor_aligned_data))
-  cell_norm <- sparseLDA::normalizetest(t(object@cell_aligned_data), tumor_norm)
+  camod_norm <- sparseLDA::normalizetest(t(object@camod_aligned_data), tumor_norm)
   tumor_label_mat <- mclust::unmap(object@tumor_label)
   colnames(tumor_label_mat) = subtype_levels
 
   sda_model_trained <- sparseLDA::sda(tumor_norm$Xc, tumor_label_mat, stop = stop, lambda = lambda)
   object@sda_model <- sda_model_trained
   object@tumor_norm_data <- data.frame(tumor_norm$Xc, check.names = F)
-  object@cell_norm_data <- data.frame(cell_norm, check.names = F)
+  object@camod_norm_data <- data.frame(camod_norm, check.names = F)
   object@tumor_sda_project <- as.matrix(object@tumor_norm_data[, object@sda_model$varNames]) %*% object@sda_model$beta
-  object@cell_sda_project <- as.matrix(object@cell_norm_data[, object@sda_model$varNames]) %*% object@sda_model$beta
+  object@camod_sda_project <- as.matrix(object@camod_norm_data[, object@sda_model$varNames]) %*% object@sda_model$beta
 
   return(object)
 }
@@ -60,7 +60,7 @@ sda_model <- function(object, stop = NULL, lambda = NULL){
 #' @import doParallel
 #' @import sparseLDA
 #'
-#' @return A \code{CASCAM} object with sda_model, cell_norm_data, tumor_norm_data, tumor_sda_project, and cell_sda_project slots.
+#' @return A \code{CASCAM} object with sda_model, camod_norm_data, tumor_norm_data, tumor_sda_project, and camod_sda_project slots.
 #' @export
 #'
 #' @examples
@@ -79,7 +79,7 @@ sda_model_cv <- function(object, stop_vector = NULL, lambda_vector = NULL, paral
   }
 
   tumor_norm <- sparseLDA::normalize(t(object@tumor_aligned_data))
-  cell_norm <- sparseLDA::normalizetest(t(object@cell_aligned_data), tumor_norm)
+  camod_norm <- sparseLDA::normalizetest(t(object@camod_aligned_data), tumor_norm)
 
   cl <- makePSOCKcluster(parallel_cores)
   registerDoParallel(cl)
@@ -88,9 +88,9 @@ sda_model_cv <- function(object, stop_vector = NULL, lambda_vector = NULL, paral
 
   object@sda_model <- tune$finalModel
   object@tumor_norm_data <- data.frame(tumor_norm$Xc, check.names = F)
-  object@cell_norm_data <- data.frame(cell_norm, check.names = F)
+  object@camod_norm_data <- data.frame(camod_norm, check.names = F)
   object@tumor_sda_project <- as.matrix(object@tumor_norm_data[, object@sda_model$varNames]) %*% object@sda_model$beta
-  object@cell_sda_project <- as.matrix(object@cell_norm_data[, object@sda_model$varNames]) %*% object@sda_model$beta
+  object@camod_sda_project <- as.matrix(object@camod_norm_data[, object@sda_model$varNames]) %*% object@sda_model$beta
 
   return(object)
 }
@@ -113,18 +113,18 @@ genome_selection <- function(object, R = 1000){
   pool_sd <- mad(unlist(sapply(subtype_levels, function(t) object@tumor_sda_project[object@tumor_label == t] - median(object@tumor_sda_project[object@tumor_label == t]))))
 
   ## SDA deviance score (sda_ds) and SDA log deviance score (sda_lds)
-  dist <- sapply(1:length(subtype_levels), function(r) abs(object@cell_sda_project - center[r])/pool_sd)
+  dist <- sapply(1:length(subtype_levels), function(r) abs(object@camod_sda_project - center[r])/pool_sd)
   colnames(dist) <- subtype_levels
   dist <- data.frame(dist)
-  rownames(dist) <- rownames(object@cell_sda_project)
+  rownames(dist) <- rownames(object@camod_sda_project)
   object@sda_ds <- dist
   object@sda_lds <- log2(object@sda_ds)
 
   ## SDA prediction probability (sda_predict_prob)
-  object@sda_predict_prob <- sparseLDA::predict.sda(object@sda_model, object@cell_norm_data, prior = c(0.5, 0.5))$posterior
+  object@sda_predict_prob <- sparseLDA::predict.sda(object@sda_model, object@camod_norm_data, prior = c(0.5, 0.5))$posterior
 
   ## p-value for SDA deviance scores (sda_ds_pval)
-  sda_ds_pval <- sapply(1:length(subtype_levels), function(r) pnorm(object@cell_sda_project, center[r], pool_sd))
+  sda_ds_pval <- sapply(1:length(subtype_levels), function(r) pnorm(object@camod_sda_project, center[r], pool_sd))
   colnames(sda_ds_pval) <- subtype_levels
   object@sda_ds_pval <- sda_ds_pval
 
@@ -132,20 +132,20 @@ genome_selection <- function(object, R = 1000){
   boot_stat_sda_cat1 <- function(data, i){
     center <- sapply(subtype_levels, function(t) median(data[i][object@tumor_label[i] == t]))
     pool_sd <- mad(unlist(sapply(subtype_levels, function(t) data[i][object@tumor_label[i] == t] - median(data[i][object@tumor_label[i] == t]))))
-    log_cat1 <- log2(abs(object@cell_sda_project - center[1])/pool_sd)
+    log_cat1 <- log2(abs(object@camod_sda_project - center[1])/pool_sd)
     return(c(log_cat1))
   }
   results_cat1 <- boot::boot(data=object@tumor_sda_project, statistic =  boot_stat_sda_cat1, R = R)
-  correct_ci_cat1 <- sapply(1:nrow(object@cell_norm_data), function(s) c(boot::boot.ci(results_cat1, type = "norm", index = s)$normal[2:3]) + c(colMeans(results_cat1$t)[s] - results_cat1$t0[s]))
+  correct_ci_cat1 <- sapply(1:nrow(object@camod_norm_data), function(s) c(boot::boot.ci(results_cat1, type = "norm", index = s)$normal[2:3]) + c(colMeans(results_cat1$t)[s] - results_cat1$t0[s]))
   sda_lds_ci_cat1 <- t(correct_ci_cat1); colnames(sda_lds_ci_cat1) = c("lower", "upper"); rownames(sda_lds_ci_cat1) = rownames(object@sda_lds)
   boot_stat_sda_cat2 <- function(data, i){
     center <- sapply(subtype_levels, function(t) median(data[i][object@tumor_label[i] == t]))
     pool_sd <- mad(unlist(sapply(subtype_levels, function(t) data[i][object@tumor_label[i] == t] - median(data[i][object@tumor_label[i] == t]))))
-    log_cat2 <- log2(abs(object@cell_sda_project - center[2])/pool_sd)
+    log_cat2 <- log2(abs(object@camod_sda_project - center[2])/pool_sd)
     return(c(log_cat2))
   }
   results_cat2 <- boot::boot(data=object@tumor_sda_project, statistic =  boot_stat_sda_cat2, R = R)
-  correct_ci_cat2 <- sapply(1:nrow(object@cell_norm_data), function(s) c(boot::boot.ci(results_cat2, type = "norm", index = s)$normal[2:3]) + c(colMeans(results_cat2$t)[s] - results_cat2$t0[s]))
+  correct_ci_cat2 <- sapply(1:nrow(object@camod_norm_data), function(s) c(boot::boot.ci(results_cat2, type = "norm", index = s)$normal[2:3]) + c(colMeans(results_cat2$t)[s] - results_cat2$t0[s]))
   sda_lds_ci_cat2 <- t(correct_ci_cat2); colnames(sda_lds_ci_cat2) = c("lower", "upper"); rownames(sda_lds_ci_cat2) = rownames(object@sda_lds)
   sda_lds_ci <- list(sda_lds_ci_cat1, sda_lds_ci_cat2)
   names(sda_lds_ci) <- names(center)
@@ -154,7 +154,7 @@ genome_selection <- function(object, R = 1000){
   uninterested_subtype <- setdiff(object@sda_model$classes, object@interested_subtype)
   classification_combine = ifelse((object@sda_predict_prob[,object@interested_subtype] > 0.5 & object@sda_ds_pval[,object@interested_subtype] > 0.025 & object@sda_ds_pval[,object@interested_subtype] < 0.975),
                                    object@interested_subtype, uninterested_subtype)
-  object@selected_cells <- rownames(object@sda_predict_prob)[classification_combine == object@interested_subtype]
+  object@selected_camods <- rownames(object@sda_predict_prob)[classification_combine == object@interested_subtype]
 
   return(object)
 }
@@ -177,7 +177,7 @@ genome_selection <- function(object, R = 1000){
 genome_selection_visualize <- function(object){
 
   uninterested_subtype <- setdiff(object@sda_model$classes, object@interested_subtype)
-  position = data.frame(place = "pos", val = object@cell_sda_project,
+  position = data.frame(place = "pos", val = object@camod_sda_project,
                         classification_predict_prob = ifelse((object@sda_predict_prob[,object@interested_subtype] > 0.5),
                                                               object@interested_subtype, uninterested_subtype),
                         classification_sda_ds_pval = ifelse(object@sda_ds_pval[,object@interested_subtype] > 0.025 & object@sda_ds_pval[,object@interested_subtype] < 0.975,
@@ -190,14 +190,14 @@ genome_selection_visualize <- function(object){
                         sda_lds_uninterested = object@sda_lds[,uninterested_subtype],
                         sda_ds_interested = object@sda_ds[,object@interested_subtype],
                         sda_ds_uninterested = object@sda_ds[,uninterested_subtype])
-  position$cell = rownames(position)
+  position$camod = rownames(position)
   tumor_density = data.frame(val = object@tumor_sda_project, grp = object@tumor_label)
-  top_cell = position %>% dplyr::filter(classification_combine == object@interested_subtype) %>% dplyr::arrange(sda_ds_interested)
-  if(nrow(top_cell) > 3){
-    top_cell = top_cell$cell[1:3]
+  top_camod = position %>% dplyr::filter(classification_combine == object@interested_subtype) %>% dplyr::arrange(sda_ds_interested)
+  if(nrow(top_camod) > 3){
+    top_camod = top_camod$camod[1:3]
   } else{
-    top_cell = top_cell$cell}
-  position$cell = ifelse(position$cell %in% top_cell, position$cell, NA)
+    top_camod = top_camod$camod}
+  position$camod = ifelse(position$camod %in% top_camod, position$camod, NA)
 
   ## Distribution figure (sda_project_position)
   subtype_levels <- levels(factor(object@tumor_label))
@@ -218,9 +218,9 @@ genome_selection_visualize <- function(object){
           legend.position="none") +
     ylab("SDA Projection") +
     ylim(range(position$val)) +
-    geom_text_repel(aes(label= cell), alpha = 0.5, position = position_jitter(seed = 1, width = 0.1),
+    geom_text_repel(aes(label= camod), alpha = 0.5, position = position_jitter(seed = 1, width = 0.1),
                     min.segment.length = unit(0, 'lines')) +
-    ggtitle("Position of the cell lines")
+    ggtitle("Position of the cancer models")
   dens =  ggplot(tumor_density, aes(x = val, color = grp)) +
     geom_density(size = 1.5) +
     xlim(range(position$val)) +
@@ -232,9 +232,9 @@ genome_selection_visualize <- function(object){
 
   ## Confidence interval
   genome_ci <- cbind(position, object@sda_lds_ci[[object@interested_subtype]])
-  genome_ci$cell <- rownames(position)
+  genome_ci$camod <- rownames(position)
   sda_ds_ci_rank <-  ggplot(data = genome_ci[position$classification_combine == object@interested_subtype, ] %>%
-                              dplyr::mutate(name = factor(cell, levels = cell[order(sda_lds_interested, decreasing = T)])),
+                              dplyr::mutate(name = factor(camod, levels = camod[order(sda_lds_interested, decreasing = T)])),
                             aes(y = name, x = sda_lds_interested, xmin = lower, xmax = upper)) +
     geom_point() +
     geom_errorbarh(height=.1) +
