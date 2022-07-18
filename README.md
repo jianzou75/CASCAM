@@ -17,7 +17,7 @@ With the help of CASCAM, users can:
 * Explore the similarity between the tumor samples and the cancer model in the pathway topology level.
 * Use the above mentioned tools through an R Shiny app interactively.
 
-The complete package documentation and instruction can be found [here](jianzou75.github.io/cascam/).
+The complete package documentation and instruction can be found [here](https://jianzou75.github.io/cascam/).
 
 
 ### Installation
