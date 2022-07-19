@@ -6,6 +6,9 @@
 \usage{
 run_CASCAM_app()
 }
+\value{
+
+}
 \description{
 This is the function to call a Shiny GUI app for data exploration. After preparing a CASCAM object, users can call this function to perform the
 genome-wide selection and pathway specific analysis.

@@ -9,6 +9,9 @@ pathway_analysis(object)
 \arguments{
 \item{object}{A \code{CASCAM} object.}
 }
+\value{
+
+}
 \description{
 Pathway specific selection analysis
 }

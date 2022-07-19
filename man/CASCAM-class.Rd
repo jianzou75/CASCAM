@@ -5,6 +5,9 @@
 \alias{CASCAM-class}
 \alias{CASCAM}
 \title{The CASCAM class}
+\value{
+
+}
 \description{
 The CASCAM class
 }

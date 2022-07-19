@@ -12,9 +12,8 @@ intro_panel <- tabPanel("Introduction",
                        br(),
                        column(8, offset = 2,
                               tabPanel("Introduction",
-                                 "BioModelSelect is an interactive tool to select the most appropritate biological models based on genome-wide and pathway-specific considerations.
-                                 Considering the running time, the data pre-processing step is needed beforehand. An RData file should be prepared prior to use this shiny app for exploration.
-                                 In the RData file, the aligned tumor data matrix with sample labels, biological models data matrix, an differential expression analysis object, and a tuned SDA model should be included.
+                                 "CASCAM is an interactive tool to select the most appropritate biological models based on genome-wide and pathway-specific considerations.
+                                 Considering the running time, the data pre-processing step is needed beforehand. An RData file including a CASCAM object should be prepared prior to use this shiny app for exploration.
                                  Details of the file preparation can be referred to our tutorial.")))
 
 
@@ -52,8 +51,8 @@ pathway_figure <- mainPanel(
                        column(10, align="center", imageOutput("pathway_congruence_heatmap", width = "120%"))),
               tabPanel("Pathway specific heatmap", value = 2, br(), textOutput("pathway_specific_heatmap_text"), br(),
                        column(8, align="center", imageOutput("pathway_specific_heatmap", width = "120%"))),
-              tabPanel("Pathway specific distribution", value = 3, column(8, align="center",
-                       imageOutput("pathway_specific_distribution", width = "120%"))),
+              tabPanel("Pathway specific ridgeline", value = 3, column(8, align="center",
+                       imageOutput("pathway_specific_ridgeline", width = "120%"))),
               tabPanel("KEGG PathView", value = 4, column(8, align="center", br(),
                         imageOutput("pathway_specific_pathview", width = "100%")))
               )
@@ -65,7 +64,7 @@ ui <- fluidPage(
   theme = shinytheme("sandstone"),
 
   navbarPage(
-    "Biological Model Selection",
+    "CASCAM",
     intro_panel,
     genome_panel,
     pathway_panel)

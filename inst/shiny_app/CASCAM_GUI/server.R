@@ -205,17 +205,17 @@ server <- function(input, output, session) {
            alt = "This is alternate text")
     }, deleteFile = TRUE)
 
-   output$pathway_specific_distribution_text <- renderText({
+   output$pathway_specific_ridgeline_text <- renderText({
      req(input$interested_camod, input$interested_pathway2)
       paste0("The ridgeline figure below shows the detailed distribution on the differential expression genes in ", input$interested_pathway,
              " among the genome-wide pre-filtered cancer models. The genes are sorted by the adjusted p-value in DEA from the smallest to the largest.")
     })
 
-  output$pathway_specific_distribution <- renderImage({
+  output$pathway_specific_ridgeline <- renderImage({
     req(input$interested_camod, input$interested_pathway2)
 
-    width  <- session$clientData$output_pathway_specific_distribution_width
-    height <- session$clientData$output_pathway_specific_distribution_height
+    width  <- session$clientData$output_pathway_specific_ridgeline_width
+    height <- session$clientData$output_pathway_specific_ridgeline_height
     pixelratio <- session$clientData$pixelratio
 
     pathways <- c(qusage::read.gmt(system.file(package = 'CASCAM', 'extdata/c2.cp.kegg.v7.4.symbols.gmt')),
