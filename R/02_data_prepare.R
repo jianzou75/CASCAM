@@ -12,8 +12,6 @@ NULL
 #'
 #' @return
 #' @exportClass InformativeGenes
-#'
-#' @examples
 InformativeGenes <- methods::setClass(
   "InformativeGenes",
   slots = c(
@@ -41,6 +39,11 @@ InformativeGenes <- methods::setClass(
 #' @return An \code{InformativeGenes} object.
 #'
 #' @export
+#'
+#' @example
+#' \dontrun{
+#' gene_info <- create_InformativeGenes(tumor_ct = tumor_ct, tumor_lab = tumor_label2, interested_subtype = "ILC")
+#' }
 #'
 #' @references
 #' Love, Michael I., Wolfgang Huber, and Simon Anders. "Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2." Genome biology 15, no. 12 (2014): 1-21.
@@ -106,8 +109,6 @@ create_InformativeGenes <- function(tumor_ct, tumor_lab, interested_subtype) {
 #'
 #' @return
 #' @export
-#'
-#' @examples
 CASCAM <- methods::setClass(
   "CASCAM",
   slots = c(
@@ -152,6 +153,10 @@ CASCAM <- methods::setClass(
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' gene_info <- create_InformativeGenes(tumor_ct, tumor_label2, "ILC")
+#' CASCAM_eg <- create_CASCAM(tumor_aligned, tumor_label, camod_aligned, gene_info)
+#' }
 create_CASCAM <- function(tumor_aligned_data, tumor_label, camod_aligned_data, info_object) {
   DEG <- c(na.omit(info_object@DEA$delabel))
   DEG <- Reduce(intersect, list(DEG, rownames(tumor_aligned_data), rownames(camod_aligned_data)))

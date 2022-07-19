@@ -10,6 +10,14 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' gene_info <- create_InformativeGenes(tumor_ct, tumor_label2, "ILC")
+#' CASCAM_eg <- create_CASCAM(tumor_aligned, tumor_label, camod_aligned, gene_info)
+#' CASCAM_eg <- sda_model(CASCAM_eg)
+#' CASCAM_eg <- genome_selection(CASCAM_eg)
+#' CASCAM_eg <- genome_selection_visualize(CASCAM_eg)
+#' CASCAM_eg <- pathway_analysis(CASCAM_eg)
+#' }
 pathway_analysis <- function(object){
   geometric.mean <- function(x) {exp(mean(log(x)))}
 
@@ -60,6 +68,15 @@ pathway_analysis <- function(object){
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' gene_info <- create_InformativeGenes(tumor_ct, tumor_label2, "ILC")
+#' CASCAM_eg <- create_CASCAM(tumor_aligned, tumor_label, camod_aligned, gene_info)
+#' CASCAM_eg <- sda_model(CASCAM_eg)
+#' CASCAM_eg <- genome_selection(CASCAM_eg)
+#' CASCAM_eg <- genome_selection_visualize(CASCAM_eg)
+#' CASCAM_eg <- pathway_analysis(CASCAM_eg)
+#' CASCAM_eg <- pathway_congruence_heatmap(CASCAM_eg)
+#' }
 pathway_congruence_heatmap <- function(object){
   fgseaRes <- object@GSEA[match(object@available_pathways, object@GSEA$pathway), ]
   pathway_annotate <- data.frame(NES =  cut(as.numeric(fgseaRes$NES), seq(-2.5, 2.5,length.out = 5), labels = c(-2, -1, 1, 2)),
@@ -95,6 +112,15 @@ pathway_congruence_heatmap <- function(object){
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' gene_info <- create_InformativeGenes(tumor_ct, tumor_label2, "ILC")
+#' CASCAM_eg <- create_CASCAM(tumor_aligned, tumor_label, camod_aligned, gene_info)
+#' CASCAM_eg <- sda_model(CASCAM_eg)
+#' CASCAM_eg <- genome_selection(CASCAM_eg)
+#' CASCAM_eg <- genome_selection_visualize(CASCAM_eg)
+#' CASCAM_eg <- pathway_analysis(CASCAM_eg)
+#' CASCAM_eg <- pathway_specific_heatmap(CASCAM_eg, "KEGG_CELL_CYCLE")
+#' }
 pathway_specific_heatmap <- function(object, pathway_name){
   allcolour = c("#3AC9B0","#F2C935","#DC143C","#0000FF","#20B2AA","#FFA500","#9370DB","#98FB98","#F08080","#1E90FF","#7CFC00","#FFFF00",
                 "#808000","#FF00FF","#FA8072","#7B68EE","#9400D3","#800080","#A0522D","#D2B48C","#D2691E","#87CEEB","#40E0D0","#5F9EA0",
@@ -137,6 +163,15 @@ pathway_specific_heatmap <- function(object, pathway_name){
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' gene_info <- create_InformativeGenes(tumor_ct, tumor_label2, "ILC")
+#' CASCAM_eg <- create_CASCAM(tumor_aligned, tumor_label, camod_aligned, gene_info)
+#' CASCAM_eg <- sda_model(CASCAM_eg)
+#' CASCAM_eg <- genome_selection(CASCAM_eg)
+#' CASCAM_eg <- genome_selection_visualize(CASCAM_eg)
+#' CASCAM_eg <- pathway_analysis(CASCAM_eg)
+#' CASCAM_eg <- pathway_specific_ridgeline(CASCAM_eg, c("MCF7", ""), "KEGG_CELL_CYCLE")
+#' }
 pathway_specific_ridgeline <- function(object, interested_camods, pathway_name){
   if(length(interested_camods) > 5){
     warning("It is highly recommended to list less than 5 camods, otherwise the figure will be too busy to read.")

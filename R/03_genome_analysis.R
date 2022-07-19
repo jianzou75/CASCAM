@@ -19,6 +19,11 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' gene_info <- create_InformativeGenes(tumor_ct, tumor_label2, "ILC")
+#' CASCAM_eg <- create_CASCAM(tumor_aligned, tumor_label, camod_aligned, gene_info)
+#' CASCAM_eg <- sda_model(CASCAM_eg)
+#' }
 #'
 #' @references
 #' Clemmensen, Line, Trevor Hastie, Daniela Witten, and Bjarne Ersbøll. 2011. “Sparse Discriminant Analysis.”
@@ -64,6 +69,11 @@ sda_model <- function(object, stop = NULL, lambda = NULL){
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' gene_info <- create_InformativeGenes(tumor_ct, tumor_label2, "ILC")
+#' CASCAM_eg <- create_CASCAM(tumor_aligned, tumor_label, camod_aligned, gene_info)
+#' CASCAM_eg <- sda_model_cv(CASCAM_eg)
+#' }
 #'
 #' @references
 #' Clemmensen, Line, Trevor Hastie, Daniela Witten, and Bjarne Ersbøll. 2011. “Sparse Discriminant Analysis.”
@@ -107,6 +117,12 @@ sda_model_cv <- function(object, stop_vector = NULL, lambda_vector = NULL, paral
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' gene_info <- create_InformativeGenes(tumor_ct, tumor_label2, "ILC")
+#' CASCAM_eg <- create_CASCAM(tumor_aligned, tumor_label, camod_aligned, gene_info)
+#' CASCAM_eg <- sda_model(CASCAM_eg)
+#' CASCAM_eg <- genome_selection(CASCAM_eg)
+#' }
 genome_selection <- function(object, R = 1000){
   subtype_levels <- levels(factor(object@tumor_label))
   center <- sapply(subtype_levels, function(t) median(object@tumor_sda_project[object@tumor_label == t]))
@@ -174,6 +190,13 @@ genome_selection <- function(object, R = 1000){
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' gene_info <- create_InformativeGenes(tumor_ct, tumor_label2, "ILC")
+#' CASCAM_eg <- create_CASCAM(tumor_aligned, tumor_label, camod_aligned, gene_info)
+#' CASCAM_eg <- sda_model(CASCAM_eg)
+#' CASCAM_eg <- genome_selection(CASCAM_eg)
+#' CASCAM_eg <- genome_selection_visualize(CASCAM_eg)
+#' }
 genome_selection_visualize <- function(object){
 
   uninterested_subtype <- setdiff(object@sda_model$classes, object@interested_subtype)
