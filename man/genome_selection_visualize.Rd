@@ -9,6 +9,18 @@ genome_selection_visualize(object)
 \arguments{
 \item{object}{}
 }
+\value{
+
+}
 \description{
 Visualization of genome-wide pre-selection analysis
+}
+\examples{
+\dontrun{
+gene_info <- create_InformativeGenes(tumor_ct, tumor_label2, "ILC")
+CASCAM_eg <- create_CASCAM(tumor_aligned, tumor_label, camod_aligned, gene_info)
+CASCAM_eg <- sda_model(CASCAM_eg)
+CASCAM_eg <- genome_selection(CASCAM_eg)
+CASCAM_eg <- genome_selection_visualize(CASCAM_eg)
+}
 }

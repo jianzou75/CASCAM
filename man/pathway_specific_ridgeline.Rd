@@ -13,6 +13,20 @@ pathway_specific_ridgeline(object, interested_camods, pathway_name)
 
 \item{pathway_name}{The interested pathway, which should be within the KEGG and Hallmark pathways.}
 }
+\value{
+
+}
 \description{
 Pathway specific gene expression ridgeline
+}
+\examples{
+\dontrun{
+gene_info <- create_InformativeGenes(tumor_ct, tumor_label2, "ILC")
+CASCAM_eg <- create_CASCAM(tumor_aligned, tumor_label, camod_aligned, gene_info)
+CASCAM_eg <- sda_model(CASCAM_eg)
+CASCAM_eg <- genome_selection(CASCAM_eg)
+CASCAM_eg <- genome_selection_visualize(CASCAM_eg)
+CASCAM_eg <- pathway_analysis(CASCAM_eg)
+CASCAM_eg <- pathway_specific_ridgeline(CASCAM_eg, c("CAMA1_CCLE", "SUM44PE"), "KEGG_CELL_CYCLE")
+}
 }

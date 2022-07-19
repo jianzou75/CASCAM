@@ -9,6 +9,20 @@ pathway_congruence_heatmap(object)
 \arguments{
 \item{object}{A \code{CASCAM} object.}
 }
+\value{
+
+}
 \description{
 A heatmap showing the congruence between the cancer models and tumors for detailed pathways.
+}
+\examples{
+\dontrun{
+gene_info <- create_InformativeGenes(tumor_ct, tumor_label2, "ILC")
+CASCAM_eg <- create_CASCAM(tumor_aligned, tumor_label, camod_aligned, gene_info)
+CASCAM_eg <- sda_model(CASCAM_eg)
+CASCAM_eg <- genome_selection(CASCAM_eg)
+CASCAM_eg <- genome_selection_visualize(CASCAM_eg)
+CASCAM_eg <- pathway_analysis(CASCAM_eg)
+CASCAM_eg <- pathway_congruence_heatmap(CASCAM_eg)
+}
 }

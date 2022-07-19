@@ -20,6 +20,14 @@ A \code{CASCAM} object with sda_model, camod_norm_data, tumor_norm_data, tumor_s
 This function trains a sparse discriminant analysis model using tumor gene expression data. The parameters can be self-determined or
 determined by the cross-validation. If cross-validation is prefered, users can refer to the function \link{sda_model_cv}.
 }
+\examples{
+\dontrun{
+gene_info <- create_InformativeGenes(tumor_ct, tumor_label2, "ILC")
+CASCAM_eg <- create_CASCAM(tumor_aligned, tumor_label, camod_aligned, gene_info)
+CASCAM_eg <- sda_model(CASCAM_eg)
+}
+
+}
 \references{
 Clemmensen, Line, Trevor Hastie, Daniela Witten, and Bjarne Ersbøll. 2011. “Sparse Discriminant Analysis.”
  Technometrics: A Journal of Statistics for the Physical, Chemical, and Engineering Sciences 53 (4): 406–13. https://doi.org/10.1198/tech.2011.08118.

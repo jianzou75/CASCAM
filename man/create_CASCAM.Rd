@@ -22,3 +22,9 @@ A \code{CASCAM} object.
 This function creates a \code{CASCAM} object for the downstream analysis. The data sets of tumor aligned gene expression data with the tumor subtype labels and
 cancer model aligned gene expression data are needed as the input. Celligner is highly recommended to align the tumor and cancer model data.
 }
+\examples{
+\dontrun{
+gene_info <- create_InformativeGenes(tumor_ct, tumor_label2, "ILC")
+CASCAM_eg <- create_CASCAM(tumor_aligned, tumor_label, camod_aligned, gene_info)
+}
+}

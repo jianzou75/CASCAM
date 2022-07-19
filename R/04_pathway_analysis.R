@@ -170,7 +170,7 @@ pathway_specific_heatmap <- function(object, pathway_name){
 #' CASCAM_eg <- genome_selection(CASCAM_eg)
 #' CASCAM_eg <- genome_selection_visualize(CASCAM_eg)
 #' CASCAM_eg <- pathway_analysis(CASCAM_eg)
-#' CASCAM_eg <- pathway_specific_ridgeline(CASCAM_eg, c("MCF7", ""), "KEGG_CELL_CYCLE")
+#' CASCAM_eg <- pathway_specific_ridgeline(CASCAM_eg, c("CAMA1_CCLE", "SUM44PE"), "KEGG_CELL_CYCLE")
 #' }
 pathway_specific_ridgeline <- function(object, interested_camods, pathway_name){
   if(length(interested_camods) > 5){
@@ -245,6 +245,18 @@ see_pathview <- function(..., save_image = FALSE){
 #'
 #' @return
 #' @export
+#'
+#' @example
+#' \dontrun{
+#' gene_info <- create_InformativeGenes(tumor_ct, tumor_label2, "ILC")
+#' CASCAM_eg <- create_CASCAM(tumor_aligned, tumor_label, camod_aligned, gene_info)
+#' CASCAM_eg <- sda_model(CASCAM_eg)
+#' CASCAM_eg <- genome_selection(CASCAM_eg)
+#' CASCAM_eg <- genome_selection_visualize(CASCAM_eg)
+#' CASCAM_eg <- pathway_analysis(CASCAM_eg)
+#' CASCAM_eg <- pathview_analysis(CASCAM_eg, "CAMA1_CCLE",  "KEGG_CELL_CYCLE")
+#' }
+
 pathview_analysis <- function(object, interested_camod, pathway_name){
   load(system.file(package = 'CASCAM', 'extdata/KEGG_name_ID_match.RData'))
   kegg_id = KEGG_name_ID_match$gs_exact_source[KEGG_name_ID_match$gs_name == pathway_name]
