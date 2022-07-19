@@ -68,6 +68,16 @@
 <p>A <code>CASCAM</code> object with genome-wide pre-selection related slots.</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="va">gene_info</span> <span class="op">&lt;-</span> <span class="fu"><a href="create_InformativeGenes.html">create_InformativeGenes</a></span><span class="op">(</span><span class="va">tumor_ct</span>, <span class="va">tumor_label2</span>, <span class="st">"ILC"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">CASCAM_eg</span> <span class="op">&lt;-</span> <span class="fu"><a href="create_CASCAM.html">create_CASCAM</a></span><span class="op">(</span><span class="va">tumor_aligned</span>, <span class="va">tumor_label</span>, <span class="va">camod_aligned</span>, <span class="va">gene_info</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">CASCAM_eg</span> <span class="op">&lt;-</span> <span class="fu"><a href="sda_model.html">sda_model</a></span><span class="op">(</span><span class="va">CASCAM_eg</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">CASCAM_eg</span> <span class="op">&lt;-</span> <span class="fu">genome_selection</span><span class="op">(</span><span class="va">CASCAM_eg</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
