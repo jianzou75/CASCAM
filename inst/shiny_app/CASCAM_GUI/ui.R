@@ -12,8 +12,9 @@ intro_panel <- tabPanel("Introduction",
                        br(),
                        column(8, offset = 2,
                               tabPanel("Introduction",
-                                 "CASCAM is an interactive tool to select the most appropritate biological models based on genome-wide and pathway-specific considerations.
-                                 Considering the running time, the data pre-processing step is needed beforehand. An RData file including a CASCAM object should be prepared prior to use this shiny app for exploration.
+                                 "CASCAM is an interactive tool to select the most appropriate cancer models to mimick the target tumor cohorts based on genome-wide and pathway-specific considerations.
+                                 Considering the running time, particularly the Celligner alignment and the cross-validation for SDA, the data pre-processing step is needed beforehand.
+                                 An RData file including a CASCAM object should be prepared before using this shiny app for exploration.
                                  Details of the file preparation can be referred to our tutorial.")))
 
 
@@ -33,7 +34,7 @@ genome_figure <- mainPanel(
   column(9, align="center",
          plotOutput("genome_visualize", width = "120%"))
 )
-genome_panel <- tabPanel("Genome-wide pre-selection",
+genome_panel <- tabPanel("Genome-wide pre-selection by machine learning",
                          sidebarLayout(genome_input, genome_figure))
 
 
@@ -45,7 +46,7 @@ pathway_input <- sidebarPanel(
   conditionalPanel(condition = "input.pathway == 4",uiOutput('select_interested_pathway3'), uiOutput('select_interested_camod2'))
 )
 pathway_figure <- mainPanel(
-  h3("Pathway specific analysis"),
+  h3("Pathway and mechanistic analysis"),
   tabsetPanel(type = "tabs", id = "pathway",
               tabPanel("Pathway congruence heatmap", value = 1, br(), textOutput("pathway_congruence_heatmap_text"), br(),
                        column(10, align="center", imageOutput("pathway_congruence_heatmap", width = "120%"))),
@@ -57,7 +58,7 @@ pathway_figure <- mainPanel(
                         imageOutput("pathway_specific_pathview", width = "100%")))
               )
 )
-pathway_panel <- tabPanel("Pathway specific analysis",
+pathway_panel <- tabPanel("Pathway and mechanistic analysis",
                          sidebarLayout(pathway_input, pathway_figure))
 
 ui <- fluidPage(

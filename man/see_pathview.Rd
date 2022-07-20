@@ -9,6 +9,9 @@ see_pathview(..., save_image = FALSE)
 \arguments{
 \item{save_image}{}
 }
+\value{
+
+}
 \description{
 Pathview while not saving as files
 }

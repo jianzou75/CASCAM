@@ -80,9 +80,9 @@ server <- function(input, output, session) {
       req(genome_result())
       "The left figure is for SDA projected deviance score visualization.
       Red circles are the one classified as interested subtype by the combination of SDA classification (assignment probability) and deviance score (p-value).
-      Color represents the classification results and point shape represents the deviance score results.
+      Color represents the classification and point shape represents the deviance score.
       The SDA projected tumor distribution is drawn on the right.
-      The right figure is for SDA projected deviance score with confidence interval on the genome-wide pre-selected biological models.
+      The right figure is for SDA projected deviance score with confidence interval on the genome-wide selected cancer models.
       The bootstrap with 1,000 times on the tumor data is performed to obtain the confidence interval, and the 95% confidence intervals are presented."
     })
 
@@ -145,7 +145,7 @@ server <- function(input, output, session) {
        The first row represents the genome-wide deviance score (the smaller, the better).
        Pathway_Size shows the number of genes included for each pathway.
        NES shows the normalized enrichment score obtained from GSEA by inputting the log fold change of the tumor data. Positive means interested subtype is upregulated comparing to uninterested one; negative means interested subtype is downregulated.
-       In the main figure, the color represents the pathway specific deviance score, and smaller values (more red) indicates better congruence."
+       In the main figure, the color represents the pathway specific deviance score, and smaller values (more red) indicate better congruence."
     })
 
     output$pathway_congruence_heatmap <- renderImage({
@@ -174,7 +174,7 @@ server <- function(input, output, session) {
     output$pathway_specific_heatmap_text <- renderText({
       req(input$interested_pathway)
       paste0("The heatmap below shows the gene specific deviance score for the differential expression genes, which is the smaller (more red) the better, in ", input$interested_pathway,
-             " among the genome-wide pre-filtered cancer models. The first row shows the pathway specific deviance score.")
+             " among the genome-wide selected cancer models. The first row shows the pathway specific deviance score.")
     })
 
     output$pathway_specific_heatmap <- renderImage({
@@ -208,7 +208,7 @@ server <- function(input, output, session) {
    output$pathway_specific_ridgeline_text <- renderText({
      req(input$interested_camod, input$interested_pathway2)
       paste0("The ridgeline figure below shows the detailed distribution on the differential expression genes in ", input$interested_pathway,
-             " among the genome-wide pre-filtered cancer models. The genes are sorted by the adjusted p-value in DEA from the smallest to the largest.")
+             " among the genome-wide selected cancer models. The genes are sorted by the adjusted p-value in DEA from the smallest to the largest.")
     })
 
   output$pathway_specific_ridgeline <- renderImage({

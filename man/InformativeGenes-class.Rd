@@ -5,6 +5,9 @@
 \alias{InformativeGenes-class}
 \alias{InformativeGenes}
 \title{The InformativeGenes class}
+\value{
+
+}
 \description{
 The InformativeGenes class
 }

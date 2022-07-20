@@ -17,8 +17,6 @@ With the help of CASCAM, users can:
 * Explore the similarity between the tumor samples and the cancer model in the pathway topology level.
 * Use the above mentioned tools through an R Shiny app interactively.
 
-The complete package documentation and instruction can be found [here](https://jianzou75.github.io/cascam/).
-
 
 ### Installation
 
@@ -49,4 +47,24 @@ Bioconductor.packages <- function(pkg){
         BiocManager::install(new.pkg, dependencies = TRUE)
 }
 Bioconductor.packages(c("pathview", "DESeq2", "fgsea", "qusage"))
+```
+
+
+### Shiny app
+
+An R Shiny app is prepared for iterative exploration. After preparing the data pre-processed CASCAM object, 
+users can call the shiny app by running the code `run_CASCAM_app()`. The data pre-process steps are as follows:
+
+```
+## Tumor and cancer model alignment
+aligned <- Celligner(tumor_log_tpm, camod_log_tpm)
+
+## Differential expression analysis
+gene_info <- create_InformativeGenes(tumor_ct, tumor_label2, "ILC")
+
+## CASCAM object creation
+CASCAM_eg <- create_CASCAM(tumor_aligned, tumor_label, camod_aligned, gene_info)
+
+## SDA model training
+CASCAM_eg <- sda_model_cv(CASCAM_eg)
 ```

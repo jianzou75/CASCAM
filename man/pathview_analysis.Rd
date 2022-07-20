@@ -13,6 +13,9 @@ pathview_analysis(object, interested_camod, pathway_name)
 
 \item{pathway_name}{The interested pathway, which should be within the KEGG and Hallmark pathways.}
 }
+\value{
+
+}
 \description{
 Pathview of the interested camod in interested pathway
 }
