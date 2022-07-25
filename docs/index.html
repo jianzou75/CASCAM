@@ -72,7 +72,6 @@
 <li>Explore the similarity between the tumor samples and the cancer model in the pathway topology level.</li>
 <li>Use the above mentioned tools through an R Shiny app interactively.</li>
 </ul>
-<p>The complete package documentation and instruction can be found <a href="https://jianzou75.github.io/cascam/" class="external-link">here</a>.</p>
 <div class="section level3">
 <h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h3>
@@ -98,6 +97,22 @@
 <span>        <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="va">new.pkg</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span><span class="fu">Bioconductor.packages</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pathview"</span>, <span class="st">"DESeq2"</span>, <span class="st">"fgsea"</span>, <span class="st">"qusage"</span><span class="op">)</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="section level3">
+<h3 id="shiny-app">Shiny app<a class="anchor" aria-label="anchor" href="#shiny-app"></a>
+</h3>
+<p>An R Shiny app is prepared for iterative exploration. After preparing the data pre-processed CASCAM object, users can call the shiny app by running the code <code><a href="reference/run_CASCAM_app.html">run_CASCAM_app()</a></code>. The data pre-process steps are as follows:</p>
+<pre><code><span><span class="co">## Tumor and cancer model alignment</span></span>
+<span><span class="va">aligned</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/Celligner.html">Celligner</a></span><span class="op">(</span><span class="va">tumor_log_tpm</span>, <span class="va">camod_log_tpm</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Differential expression analysis</span></span>
+<span><span class="va">gene_info</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/create_InformativeGenes.html">create_InformativeGenes</a></span><span class="op">(</span><span class="va">tumor_ct</span>, <span class="va">tumor_label2</span>, <span class="st">"ILC"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## CASCAM object creation</span></span>
+<span><span class="va">CASCAM_eg</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/create_CASCAM.html">create_CASCAM</a></span><span class="op">(</span><span class="va">tumor_aligned</span>, <span class="va">tumor_label</span>, <span class="va">camod_aligned</span>, <span class="va">gene_info</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## SDA model training</span></span>
+<span><span class="va">CASCAM_eg</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/sda_model_cv.html">sda_model_cv</a></span><span class="op">(</span><span class="va">CASCAM_eg</span><span class="op">)</span></span></code></pre>
 </div>
 </div>
 
