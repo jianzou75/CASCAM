@@ -141,11 +141,11 @@ server <- function(input, output, session) {
 
     output$pathway_congruence_heatmap_text <- renderText({
       req(pathway_result())
-      "The heatmap below shows a general overview of the congruence of the cancer models to the tumor centers in different avaiable pathways.
+      "The heatmap below shows a general overview of the congruence of the cancer models to the tumor centers in different avaliable pathways.
        The first row represents the genome-wide deviance score (the smaller, the better).
        Pathway_Size shows the number of genes included for each pathway.
        NES shows the normalized enrichment score obtained from GSEA by inputting the log fold change of the tumor data. Positive means interested subtype is upregulated comparing to uninterested one; negative means interested subtype is downregulated.
-       In the main figure, the color represents the pathway specific deviance score, and smaller values (more red) indicate better congruence."
+       In the main figure, the color represents the pathway specific deviance score, and smaller values (darker) indicate better congruence."
     })
 
     output$pathway_congruence_heatmap <- renderImage({
@@ -173,7 +173,7 @@ server <- function(input, output, session) {
 
     output$pathway_specific_heatmap_text <- renderText({
       req(input$interested_pathway)
-      paste0("The heatmap below shows the gene specific deviance score for the differential expression genes, which is the smaller (more red) the better, in ", input$interested_pathway,
+      paste0("The heatmap below shows the gene specific deviance score for the differential expression genes, which is the smaller (darker) the better, in ", input$interested_pathway,
              " among the genome-wide selected cancer models. The first row shows the pathway specific deviance score.")
     })
 
