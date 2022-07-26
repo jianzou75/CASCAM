@@ -240,13 +240,13 @@ genome_selection_visualize <- function(object){
           axis.ticks.x=element_blank(),
           legend.position="none") +
     ylab("SDA Projection") +
-    ylim(range(position$val)) +
+    ylim(c(min(c(position$val, tumor_density$val)), max(c(position$val, tumor_density$val)))) +
     geom_text_repel(aes(label= camod), alpha = 0.5, position = position_jitter(seed = 1, width = 0.1),
                     min.segment.length = unit(0, 'lines')) +
     ggtitle("Position of the cancer models")
   dens =  ggplot(tumor_density, aes(x = val, color = grp)) +
     geom_density(size = 1.5) +
-    xlim(range(position$val)) +
+    xlim(c(min(c(position$val, tumor_density$val)), max(c(position$val, tumor_density$val)))) +
     theme_void() +
     theme(legend.position = "none") +
     scale_colour_manual(breaks = c(object@interested_subtype, uninterested_subtype), values = c("#FF5334", "#4F9BFA")) +
