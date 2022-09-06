@@ -24,7 +24,7 @@ cancer model aligned gene expression data are needed as the input. Celligner is 
 }
 \examples{
 \dontrun{
-gene_info <- create_InformativeGenes(tumor_ct, tumor_label2, "ILC")
-CASCAM_eg <- create_CASCAM(tumor_aligned, tumor_label, camod_aligned, gene_info)
+gene_info <- create_InformativeGenes(brca_ct, brca_label2, "ILC")
+CASCAM_eg <- create_CASCAM(tumor_aligned, tumor_label, cell_aligned, gene_info)
 }
 }

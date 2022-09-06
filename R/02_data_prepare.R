@@ -16,7 +16,6 @@ InformativeGenes <- methods::setClass(
   "InformativeGenes",
   slots = c(
     DEA = "data.frame",
-    GSEA = "data.frame",
     interested_subtype = "character"
     )
   )
@@ -69,14 +68,8 @@ create_InformativeGenes <- function(tumor_ct, tumor_lab, interested_subtype) {
   de$delabel <- NA
   de$delabel[de$diffexpressed != "NO"] <- de$gene_symbol[de$diffexpressed != "NO"]
 
-  pathways <- c(qusage::read.gmt(system.file(package = "CASCAM", "extdata/c2.cp.kegg.v7.4.symbols.gmt")),
-                qusage::read.gmt(system.file(package = "CASCAM", "extdata/h.all.v7.4.symbols.gmt")))
-  gene_rank <- de$log2FoldChange
-  names(gene_rank) <- de$gene_symbol
-  fgseaRes <- data.frame(fgsea::fgsea(pathways, gene_rank, minSize = 15, maxSize = 500))
-
   object <- methods::new(Class = "InformativeGenes",
-                         DEA = de, GSEA = fgseaRes, interested_subtype = as.character(interested_subtype))
+                         DEA = de, interested_subtype = as.character(interested_subtype))
 
   return(object)
 }
@@ -104,8 +97,10 @@ create_InformativeGenes <- function(tumor_ct, tumor_lab, interested_subtype) {
 #' @slot available_pathways A vector of available pathways.
 #' @slot pathway_congruence_heatmap A ggplot2 object for the pathway congruence heatmap.
 #' @slot pathway_gene_heatmap A ggplot2 object for the pathway specific heatmap.
-#' @slot pathway_gene_ridgeline A ggplot2 object for the pathway specific gene expression ridgeline.
+#' @slot pathway_gene_violin A ggplot2 object for the pathway specific gene expression violin plot.
 #' @slot pathview_figure A pathview figure for one specific pathway and one specific cancer model.
+#' @slot GSEA A data frame of the results of gene set enrichment analysis.
+#' @slot genome_selection_criteria A vector of three numeric values for the genome-wide cancer model pre-selection.
 #'
 #' @return
 #' @export
@@ -132,8 +127,10 @@ CASCAM <- methods::setClass(
     available_pathways = "character",
     pathway_congruence_heatmap = "ANY",
     pathway_gene_heatmap = "ANY",
-    pathway_gene_ridgeline = "ANY",
-    pathview_figure = "ANY"
+    pathway_gene_violin = "ANY",
+    pathview_figure = "ANY",
+    GSEA = "data.frame",
+    genome_selection_criteria = "numeric"
   ),
   contains = c("InformativeGenes")
 )
@@ -154,8 +151,8 @@ CASCAM <- methods::setClass(
 #'
 #' @examples
 #' \dontrun{
-#' gene_info <- create_InformativeGenes(tumor_ct, tumor_label2, "ILC")
-#' CASCAM_eg <- create_CASCAM(tumor_aligned, tumor_label, camod_aligned, gene_info)
+#' gene_info <- create_InformativeGenes(brca_ct, brca_label2, "ILC")
+#' CASCAM_eg <- create_CASCAM(tumor_aligned, tumor_label, cell_aligned, gene_info)
 #' }
 create_CASCAM <- function(tumor_aligned_data, tumor_label, camod_aligned_data, info_object) {
   DEG <- c(na.omit(info_object@DEA$delabel))
@@ -163,9 +160,16 @@ create_CASCAM <- function(tumor_aligned_data, tumor_label, camod_aligned_data, i
   tumor_aligned_data <- tumor_aligned_data[DEG,]
   camod_aligned_data <- camod_aligned_data[DEG,]
 
+  pathways <- c(qusage::read.gmt(system.file(package = "CASCAM", "extdata/c2.cp.kegg.v7.4.symbols.gmt")),
+                qusage::read.gmt(system.file(package = "CASCAM", "extdata/h.all.v7.4.symbols.gmt")))
+  pathways <- pathways[sapply(pathways, function(p) sum(DEG %in% p)) > 20]
+  gene_rank <- info_object@DEA$log2FoldChange
+  names(gene_rank) <- info_object@DEA$gene_symbol
+  fgseaRes <- data.frame(fgsea::fgsea(pathways, gene_rank, minSize = 15, maxSize = 500))
+
   object <- methods::new(Class = "CASCAM",
                          tumor_aligned_data = tumor_aligned_data, tumor_label = tumor_label,
-                         camod_aligned_data = camod_aligned_data, info_object)
-
+                         camod_aligned_data = camod_aligned_data, GSEA = fgseaRes,
+                         info_object)
   return(object)
 }

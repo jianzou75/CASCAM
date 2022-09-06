@@ -150,7 +150,7 @@ pathway_specific_heatmap <- function(object, pathway_name){
 }
 
 
-#' Pathway specific gene expression ridgeline
+#' Pathway specific gene expression violin
 #'
 #' @param object A \code{CASCAM} object.
 #' @param interested_camods A vector of interested cancer models.
@@ -170,9 +170,9 @@ pathway_specific_heatmap <- function(object, pathway_name){
 #' CASCAM_eg <- genome_selection(CASCAM_eg)
 #' CASCAM_eg <- genome_selection_visualize(CASCAM_eg)
 #' CASCAM_eg <- pathway_analysis(CASCAM_eg)
-#' CASCAM_eg <- pathway_specific_ridgeline(CASCAM_eg, c("CAMA1_CCLE", "SUM44PE"), "KEGG_CELL_CYCLE")
+#' CASCAM_eg <- pathway_specific_violin(CASCAM_eg, c("CAMA1_CCLE", "SUM44PE"), "KEGG_CELL_CYCLE")
 #' }
-pathway_specific_ridgeline <- function(object, interested_camods, pathway_name){
+pathway_specific_violin <- function(object, interested_camods, pathway_name){
   if(length(interested_camods) > 5){
     warning("It is highly recommended to list less than 5 camods, otherwise the figure will be too busy to read.")
   }
@@ -193,9 +193,8 @@ pathway_specific_ridgeline <- function(object, interested_camods, pathway_name){
   camod_pathway  <- object@camod_norm_data[, gene_pathway]
   tumor_pathway2 <- data.frame(reshape2::melt(tumor_pathway, id.vars = "label"))
   camod_pathway2 <- reshape2::melt(as.matrix(camod_pathway))
-  pathway_gene_ridgeline <- ggplot() +
-    geom_density_ridges(data =  tumor_pathway2, aes(x = value, y = variable, color = label), scale = 1,  alpha = 0, size = 1, quantile_lines = TRUE, quantiles = 2) +
-    scale_colour_manual(name = "tumor distribution", breaks = c(uninterested_subtype, object@interested_subtype), values = c("#BBE7FE", "#FFAEBC")) +
+  pathway_gene_violin <- ggplot() +
+    geom_violin(data =  tumor_pathway2 %>% filter(label == object@interested_subtype), aes(x = value, y = variable, color = label), scale = 1,  alpha = 0, size = 1, color = "#FFAEBC") +
     theme_bw() +
     geom_point(position = position_jitter(seed = 1, width = 0, height = 0), data = camod_pathway2[camod_pathway2$Var1 %in% interested_camods,], aes(x = value, y = Var2, fill = Var1), size = 3, shape=21, color = "white") +
     scale_fill_manual(name = "cancer model", values = allcolour[1:length(interested_camods)]) +
@@ -204,7 +203,7 @@ pathway_specific_ridgeline <- function(object, interested_camods, pathway_name){
     xlim(round(range(camod_pathway2[camod_pathway2$Var1 %in% interested_camods,]$value), 2)) +
     ggtitle(paste0(pathway_name, " gene distribution"))
 
-  object@pathway_gene_ridgeline <- pathway_gene_ridgeline
+  object@pathway_gene_violin <- pathway_gene_violin
 
   return(object)
 }
@@ -274,5 +273,3 @@ pathview_analysis <- function(object, interested_camod, pathway_name){
 
   return(object)
 }
-
-

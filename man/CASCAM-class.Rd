@@ -54,8 +54,12 @@ The CASCAM class
 
 \item{\code{pathway_gene_heatmap}}{A ggplot2 object for the pathway specific heatmap.}
 
-\item{\code{pathway_gene_ridgeline}}{A ggplot2 object for the pathway specific gene expression ridgeline.}
+\item{\code{pathway_gene_violin}}{A ggplot2 object for the pathway specific gene expression violin plot.}
 
 \item{\code{pathview_figure}}{A pathview figure for one specific pathway and one specific cancer model.}
+
+\item{\code{GSEA}}{A data frame of the results of gene set enrichment analysis.}
+
+\item{\code{genome_selection_criteria}}{A vector of three numeric values for the genome-wide cancer model pre-selection.}
 }}
 

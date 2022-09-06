@@ -68,7 +68,8 @@ server <- function(input, output, session) {
     genome_result <- eventReactive(input$genome_analysis_start, {
       input$genome_analysis_start
 
-      genome_selection(CASCAM)
+      genome_selection(CASCAM, assignment_prob_cutoff = input$assignment_prob_cutoff,
+                       min_sda_ds_pval = input$min_sda_ds_pval, max_sda_ds_pval = input$max_sda_ds_pval)
     })
     output$genome_visualize <- renderPlot({
       CASCAM <- genome_selection_visualize(genome_result())
@@ -205,17 +206,17 @@ server <- function(input, output, session) {
            alt = "This is alternate text")
     }, deleteFile = TRUE)
 
-   output$pathway_specific_ridgeline_text <- renderText({
+   output$pathway_specific_violin_text <- renderText({
      req(input$interested_camod, input$interested_pathway2)
-      paste0("The ridgeline figure below shows the detailed distribution on the differential expression genes in ", input$interested_pathway,
+      paste0("The violin figure below shows the detailed distribution on the differential expression genes in ", input$interested_pathway,
              " among the genome-wide selected cancer models. The genes are sorted by the adjusted p-value in DEA from the smallest to the largest.")
     })
 
-  output$pathway_specific_ridgeline <- renderImage({
+  output$pathway_specific_violin <- renderImage({
     req(input$interested_camod, input$interested_pathway2)
 
-    width  <- session$clientData$output_pathway_specific_ridgeline_width
-    height <- session$clientData$output_pathway_specific_ridgeline_height
+    width  <- session$clientData$output_pathway_specific_violin_width
+    height <- session$clientData$output_pathway_specific_violin_height
     pixelratio <- session$clientData$pixelratio
 
     pathways <- c(qusage::read.gmt(system.file(package = 'CASCAM', 'extdata/c2.cp.kegg.v7.4.symbols.gmt')),
@@ -227,8 +228,8 @@ server <- function(input, output, session) {
 
     png(outfile, width = width*pixelratio, height = width/20 * length(gene_pathway) * pixelratio,
         res = 72*pixelratio)
-    plot(pathway_specific_ridgeline(pathway_result(), pathway_name = input$interested_pathway2,
-                                    interested_camods = input$interested_camod)@pathway_gene_ridgeline)
+    plot(pathway_specific_violin(pathway_result(), pathway_name = input$interested_pathway2,
+                                    interested_camods = input$interested_camod)@pathway_gene_violin)
     dev.off()
 
     ### Return a list containing the filename

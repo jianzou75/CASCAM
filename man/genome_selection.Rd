@@ -4,12 +4,24 @@
 \alias{genome_selection}
 \title{Genome-wide pre-selection analysis}
 \usage{
-genome_selection(object, R = 1000)
+genome_selection(
+  object,
+  R = 1000,
+  assignment_prob_cutoff = 0.8,
+  min_sda_ds_pval = 0.025,
+  max_sda_ds_pval = 0.975
+)
 }
 \arguments{
 \item{object}{A \code{CASCAM} object.}
 
 \item{R}{The number of bootstrap replicates. R = 1000 by default.}
+
+\item{assignment_prob_cutoff}{The cutoff point for the mimimum SDA based assignment probability.}
+
+\item{min_sda_ds_pval}{The cutoff point for the minimum SDA based deviance score p-value.}
+
+\item{max_sda_ds_pval}{The cutoff point for the maximum SDA based deviance score p-value.}
 }
 \value{
 A \code{CASCAM} object with genome-wide pre-selection related slots.

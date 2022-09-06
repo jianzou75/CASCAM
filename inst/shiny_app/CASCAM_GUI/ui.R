@@ -25,6 +25,11 @@ genome_input <- sidebarPanel(
             accept = ".RData"),
   uiOutput('select_CASCAM_object'),
 
+  h4("Criteria for genomic preselection"),
+  numericInput("assignment_prob_cutoff", "Cutoff for assignment probability", 0.8, min = 0.5, max = 1),
+  numericInput("min_sda_ds_pval", "Minimum value for the p-value of SDA based devaince score", 0.025, min = 0, max = 0.5),
+  numericInput("max_sda_ds_pval", "Maximum value for the p-value of SDA based devaince score", 0.975, min = 0.5, max = 1),
+
   actionButton("genome_analysis_start", "Submit")
 )
 genome_figure <- mainPanel(
@@ -52,8 +57,8 @@ pathway_figure <- mainPanel(
                        column(10, align="center", imageOutput("pathway_congruence_heatmap", width = "120%"))),
               tabPanel("Pathway specific heatmap", value = 2, br(), textOutput("pathway_specific_heatmap_text"), br(),
                        column(8, align="center", imageOutput("pathway_specific_heatmap", width = "120%"))),
-              tabPanel("Pathway specific ridgeline", value = 3, column(8, align="center",
-                       imageOutput("pathway_specific_ridgeline", width = "120%"))),
+              tabPanel("Pathway specific violin", value = 3, column(8, align="center",
+                       imageOutput("pathway_specific_violin", width = "120%"))),
               tabPanel("KEGG PathView", value = 4, column(8, align="center", br(),
                         imageOutput("pathway_specific_pathview", width = "100%")))
               )

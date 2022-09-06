@@ -110,6 +110,10 @@ sda_model_cv <- function(object, stop_vector = NULL, lambda_vector = NULL, paral
 #'
 #' @param object A \code{CASCAM} object.
 #' @param R The number of bootstrap replicates. R = 1000 by default.
+#' @param assignment_prob_cutoff The cutoff point for the mimimum SDA based assignment probability.
+#' @param min_sda_ds_pval The cutoff point for the minimum SDA based deviance score p-value.
+#' @param max_sda_ds_pval The cutoff point for the maximum SDA based deviance score p-value.
+#'
 #'
 #' @import boot
 #'
@@ -123,7 +127,11 @@ sda_model_cv <- function(object, stop_vector = NULL, lambda_vector = NULL, paral
 #' CASCAM_eg <- sda_model(CASCAM_eg)
 #' CASCAM_eg <- genome_selection(CASCAM_eg)
 #' }
-genome_selection <- function(object, R = 1000){
+genome_selection <- function(object, R = 1000, assignment_prob_cutoff = 0.8, min_sda_ds_pval = 0.025, max_sda_ds_pval = 0.975){
+  object@genome_selection_criteria <- c(assignment_prob_cutoff = assignment_prob_cutoff,
+                                        min_sda_ds_pval = min_sda_ds_pval,
+                                        max_sda_ds_pval = max_sda_ds_pval)
+
   subtype_levels <- levels(factor(object@tumor_label))
   center <- sapply(subtype_levels, function(t) median(object@tumor_sda_project[object@tumor_label == t]))
   pool_sd <- mad(unlist(sapply(subtype_levels, function(t) object@tumor_sda_project[object@tumor_label == t] - median(object@tumor_sda_project[object@tumor_label == t]))))
@@ -168,7 +176,7 @@ genome_selection <- function(object, R = 1000){
   object@sda_lds_ci <- sda_lds_ci
 
   uninterested_subtype <- setdiff(object@sda_model$classes, object@interested_subtype)
-  classification_combine = ifelse((object@sda_predict_prob[,object@interested_subtype] > 0.5 & object@sda_ds_pval[,object@interested_subtype] > 0.025 & object@sda_ds_pval[,object@interested_subtype] < 0.975),
+  classification_combine = ifelse((object@sda_predict_prob[,object@interested_subtype] > assignment_prob_cutoff & object@sda_ds_pval[,object@interested_subtype] > min_sda_ds_pval & object@sda_ds_pval[,object@interested_subtype] < max_sda_ds_pval),
                                    object@interested_subtype, uninterested_subtype)
   object@selected_camods <- rownames(object@sda_predict_prob)[classification_combine == object@interested_subtype]
 
@@ -198,14 +206,17 @@ genome_selection <- function(object, R = 1000){
 #' CASCAM_eg <- genome_selection_visualize(CASCAM_eg)
 #' }
 genome_selection_visualize <- function(object){
+  assignment_prob_cutoff = object@genome_selection_criteria["assignment_prob_cutoff"]
+  min_sda_ds_pval = object@genome_selection_criteria["min_sda_ds_pval"]
+  max_sda_ds_pval = object@genome_selection_criteria["max_sda_ds_pval"]
 
   uninterested_subtype <- setdiff(object@sda_model$classes, object@interested_subtype)
   position = data.frame(place = "pos", val = object@camod_sda_project,
-                        classification_predict_prob = ifelse((object@sda_predict_prob[,object@interested_subtype] > 0.5),
+                        classification_predict_prob = ifelse((object@sda_predict_prob[,object@interested_subtype] > assignment_prob_cutoff),
                                                               object@interested_subtype, uninterested_subtype),
-                        classification_sda_ds_pval = ifelse(object@sda_ds_pval[,object@interested_subtype] > 0.025 & object@sda_ds_pval[,object@interested_subtype] < 0.975,
+                        classification_sda_ds_pval = ifelse(object@sda_ds_pval[,object@interested_subtype] > min_sda_ds_pval & object@sda_ds_pval[,object@interested_subtype] < max_sda_ds_pval,
                                                             object@interested_subtype, uninterested_subtype),
-                        classification_combine = ifelse((object@sda_predict_prob[,object@interested_subtype] > 0.5 & object@sda_ds_pval[,object@interested_subtype] > 0.025 & object@sda_ds_pval[,object@interested_subtype] < 0.975),
+                        classification_combine = ifelse((object@sda_predict_prob[,object@interested_subtype] > assignment_prob_cutoff & object@sda_ds_pval[,object@interested_subtype] > min_sda_ds_pval & object@sda_ds_pval[,object@interested_subtype] < max_sda_ds_pval),
                                                          object@interested_subtype, uninterested_subtype),
                         sda_predict_prob_interested = object@sda_predict_prob[,object@interested_subtype],
                         sda_predict_prob_uninterested = object@sda_predict_prob[,uninterested_subtype],
