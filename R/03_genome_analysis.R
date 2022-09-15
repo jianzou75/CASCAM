@@ -20,8 +20,8 @@
 #'
 #' @examples
 #' \dontrun{
-#' gene_info <- create_InformativeGenes(tumor_ct, tumor_label2, "ILC")
-#' CASCAM_eg <- create_CASCAM(tumor_aligned, tumor_label, camod_aligned, gene_info)
+#' gene_info <- create_InformativeGenes(brca_ct, brca_label2, "ILC")
+#' CASCAM_eg <- create_CASCAM(tumor_aligned, tumor_label, cell_aligned, gene_info)
 #' CASCAM_eg <- sda_model(CASCAM_eg)
 #' }
 #'
@@ -29,6 +29,7 @@
 #' Clemmensen, Line, Trevor Hastie, Daniela Witten, and Bjarne Ersbøll. 2011. “Sparse Discriminant Analysis.”
 #'  Technometrics: A Journal of Statistics for the Physical, Chemical, and Engineering Sciences 53 (4): 406–13. https://doi.org/10.1198/tech.2011.08118.
 sda_model <- function(object, stop = NULL, lambda = NULL){
+  set.seed(123)
   if(is.null(stop)| is.null(lambda)){
     stop <- -round(nrow(object@tumor_aligned_data)/20)
     lambda <- 1e-4
