@@ -8,8 +8,7 @@ genome_selection(
   object,
   R = 1000,
   assignment_prob_cutoff = 0.8,
-  min_sda_ds_pval = 0.025,
-  max_sda_ds_pval = 0.975
+  min_sda_ds_pval = 0.05
 )
 }
 \arguments{

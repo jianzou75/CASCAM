@@ -69,7 +69,7 @@ server <- function(input, output, session) {
       input$genome_analysis_start
 
       genome_selection(CASCAM, assignment_prob_cutoff = input$assignment_prob_cutoff,
-                       min_sda_ds_pval = input$min_sda_ds_pval, max_sda_ds_pval = input$max_sda_ds_pval)
+                       min_sda_ds_pval = input$min_sda_ds_pval)
     })
     output$genome_visualize <- renderPlot({
       CASCAM <- genome_selection_visualize(genome_result())

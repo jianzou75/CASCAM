@@ -68,3 +68,7 @@ CASCAM_eg <- create_CASCAM(tumor_aligned, tumor_label, camod_aligned, gene_info)
 ## SDA model training
 CASCAM_eg <- sda_model_cv(CASCAM_eg)
 ```
+
+### Code for the manuscript
+
+The code for the CASCAM manuscript can be found in the folder `inst/manuscript`.

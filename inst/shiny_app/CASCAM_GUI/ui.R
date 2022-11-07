@@ -27,8 +27,7 @@ genome_input <- sidebarPanel(
 
   h4("Criteria for genomic preselection"),
   numericInput("assignment_prob_cutoff", "Cutoff for assignment probability", 0.8, min = 0.5, max = 1),
-  numericInput("min_sda_ds_pval", "Minimum value for the p-value of SDA based devaince score", 0.025, min = 0, max = 0.5),
-  numericInput("max_sda_ds_pval", "Maximum value for the p-value of SDA based devaince score", 0.975, min = 0.5, max = 1),
+  numericInput("min_sda_ds_pval", "Minimum value for the p-value of SDA based devaince score", 0.05, min = 0, max = 0.5),
 
   actionButton("genome_analysis_start", "Submit")
 )

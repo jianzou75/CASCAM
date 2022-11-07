@@ -86,7 +86,7 @@ pathway_congruence_heatmap <- function(object){
   row.names(sample_annotate) <- colnames(object@pathway_ds[[object@interested_subtype]])
 
   pathway_congruence_heatmap <- pheatmap::pheatmap(object@pathway_ds[[object@interested_subtype]],
-                                                   color = c("#DA2C43", "#E15566", "#E97E88", "#F0A8AB", "#F8D1CD", "#FFFAF0"),
+                                                   color = c("#d73027", "#fc8d59", "#fee090", "#ffffbf", "#e0f3f8", "#91bfdb", "#4575b4"),
                                                    breaks = seq(0, 2, length.out = 7),
                                                    annotation_row = pathway_annotate,
                                                    annotation_col = sample_annotate,

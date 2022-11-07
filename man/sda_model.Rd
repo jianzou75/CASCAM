@@ -22,8 +22,8 @@ determined by the cross-validation. If cross-validation is prefered, users can r
 }
 \examples{
 \dontrun{
-gene_info <- create_InformativeGenes(tumor_ct, tumor_label2, "ILC")
-CASCAM_eg <- create_CASCAM(tumor_aligned, tumor_label, camod_aligned, gene_info)
+gene_info <- create_InformativeGenes(brca_ct, brca_label2, "ILC")
+CASCAM_eg <- create_CASCAM(tumor_aligned, tumor_label, cell_aligned, gene_info)
 CASCAM_eg <- sda_model(CASCAM_eg)
 }
 

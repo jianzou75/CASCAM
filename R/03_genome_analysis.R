@@ -128,10 +128,9 @@ sda_model_cv <- function(object, stop_vector = NULL, lambda_vector = NULL, paral
 #' CASCAM_eg <- sda_model(CASCAM_eg)
 #' CASCAM_eg <- genome_selection(CASCAM_eg)
 #' }
-genome_selection <- function(object, R = 1000, assignment_prob_cutoff = 0.8, min_sda_ds_pval = 0.025, max_sda_ds_pval = 0.975){
+genome_selection <- function(object, R = 1000, assignment_prob_cutoff = 0.8, min_sda_ds_pval = 0.05){
   object@genome_selection_criteria <- c(assignment_prob_cutoff = assignment_prob_cutoff,
-                                        min_sda_ds_pval = min_sda_ds_pval,
-                                        max_sda_ds_pval = max_sda_ds_pval)
+                                        min_sda_ds_pval = min_sda_ds_pval)
 
   subtype_levels <- levels(factor(object@tumor_label))
   center <- sapply(subtype_levels, function(t) median(object@tumor_sda_project[object@tumor_label == t]))
@@ -149,9 +148,12 @@ genome_selection <- function(object, R = 1000, assignment_prob_cutoff = 0.8, min
   object@sda_predict_prob <- sparseLDA::predict.sda(object@sda_model, object@camod_norm_data, prior = c(0.5, 0.5))$posterior
 
   ## p-value for SDA deviance scores (sda_ds_pval)
-  sda_ds_pval <- sapply(1:length(subtype_levels), function(r) pnorm(object@camod_sda_project, center[r], pool_sd))
-  colnames(sda_ds_pval) <- subtype_levels
-  object@sda_ds_pval <- sda_ds_pval
+  distance_train <- sapply(1:length(subtype_levels), function(r) abs(object@tumor_sda_project[object@tumor_label == subtype_levels[r]] - center[r])/pool_sd)
+  distribution_SDA <- sapply(distance_train,  ecdf)
+  SDA_DS_pval = sapply(1:length(subtype_levels), function(r) 1-distribution_SDA[[r]](dist[,r]))
+  colnames(SDA_DS_pval) = levels(factor(object@tumor_label))
+  rownames(SDA_DS_pval) = rownames(dist)
+  object@sda_ds_pval <- SDA_DS_pval
 
   ## bootstrap for confidence interval
   boot_stat_sda_cat1 <- function(data, i){
@@ -177,7 +179,7 @@ genome_selection <- function(object, R = 1000, assignment_prob_cutoff = 0.8, min
   object@sda_lds_ci <- sda_lds_ci
 
   uninterested_subtype <- setdiff(object@sda_model$classes, object@interested_subtype)
-  classification_combine = ifelse((object@sda_predict_prob[,object@interested_subtype] > assignment_prob_cutoff & object@sda_ds_pval[,object@interested_subtype] > min_sda_ds_pval & object@sda_ds_pval[,object@interested_subtype] < max_sda_ds_pval),
+  classification_combine = ifelse((object@sda_predict_prob[,object@interested_subtype] > assignment_prob_cutoff & object@sda_ds_pval[,object@interested_subtype] > min_sda_ds_pval),
                                    object@interested_subtype, uninterested_subtype)
   object@selected_camods <- rownames(object@sda_predict_prob)[classification_combine == object@interested_subtype]
 
@@ -209,15 +211,14 @@ genome_selection <- function(object, R = 1000, assignment_prob_cutoff = 0.8, min
 genome_selection_visualize <- function(object){
   assignment_prob_cutoff = object@genome_selection_criteria["assignment_prob_cutoff"]
   min_sda_ds_pval = object@genome_selection_criteria["min_sda_ds_pval"]
-  max_sda_ds_pval = object@genome_selection_criteria["max_sda_ds_pval"]
 
   uninterested_subtype <- setdiff(object@sda_model$classes, object@interested_subtype)
   position = data.frame(place = "pos", val = object@camod_sda_project,
                         classification_predict_prob = ifelse((object@sda_predict_prob[,object@interested_subtype] > assignment_prob_cutoff),
                                                               object@interested_subtype, uninterested_subtype),
-                        classification_sda_ds_pval = ifelse(object@sda_ds_pval[,object@interested_subtype] > min_sda_ds_pval & object@sda_ds_pval[,object@interested_subtype] < max_sda_ds_pval,
+                        classification_sda_ds_pval = ifelse(object@sda_ds_pval[,object@interested_subtype] > min_sda_ds_pval,
                                                             object@interested_subtype, uninterested_subtype),
-                        classification_combine = ifelse((object@sda_predict_prob[,object@interested_subtype] > assignment_prob_cutoff & object@sda_ds_pval[,object@interested_subtype] > min_sda_ds_pval & object@sda_ds_pval[,object@interested_subtype] < max_sda_ds_pval),
+                        classification_combine = ifelse((object@sda_predict_prob[,object@interested_subtype] > assignment_prob_cutoff & object@sda_ds_pval[,object@interested_subtype] > min_sda_ds_pval),
                                                          object@interested_subtype, uninterested_subtype),
                         sda_predict_prob_interested = object@sda_predict_prob[,object@interested_subtype],
                         sda_predict_prob_uninterested = object@sda_predict_prob[,uninterested_subtype],
@@ -238,7 +239,7 @@ genome_selection_visualize <- function(object){
   subtype_levels <- levels(factor(object@tumor_label))
   center <- sapply(subtype_levels, function(t) median(object@tumor_sda_project[object@tumor_label == t]))
   scatter = ggplot(data = position, aes(x = place, y = val)) +
-    geom_jitter(aes(color = classification_predict_prob, shape = classification_combine), size = 2, position = position_jitter(seed = 1, width = 0.1)) +
+    geom_jitter(aes(color = classification_predict_prob, shape = classification_sda_ds_pval), size = 2, position = position_jitter(seed = 1, width = 0.1)) +
     guides(size = FALSE) +
     scale_colour_manual(name = "SDA_class selection",  breaks = c(object@interested_subtype, uninterested_subtype), values = c("#FF5334", "#4F9BFA")) +
     scale_shape_manual(name = "SDA_DS selection",  breaks = c(object@interested_subtype, uninterested_subtype), values =  c(19, 2)) +
