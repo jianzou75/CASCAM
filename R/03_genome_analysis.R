@@ -80,7 +80,7 @@ sda_model <- function(object, stop = NULL, lambda = NULL){
 #' Clemmensen, Line, Trevor Hastie, Daniela Witten, and Bjarne Ersbøll. 2011. “Sparse Discriminant Analysis.”
 #'  Technometrics: A Journal of Statistics for the Physical, Chemical, and Engineering Sciences 53 (4): 406–13. https://doi.org/10.1198/tech.2011.08118.
 sda_model_cv <- function(object, stop_vector = NULL, lambda_vector = NULL, parallel_cores = 1){
-  if(is.null(stop)| is.null(lambda)){
+  if(is.null(stop_vector)| is.null(lambda_vector)){
     searchgrid <- expand.grid(NumVars = round(c(nrow(object@tumor_aligned_data)/20, nrow(object@tumor_aligned_data)/10,
                                                 nrow(object@tumor_aligned_data)/5,  nrow(object@tumor_aligned_data)/2)),
                               lambda = c(0, 0.1, 1e-4))

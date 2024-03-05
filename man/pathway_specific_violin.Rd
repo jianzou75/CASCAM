@@ -13,9 +13,6 @@ pathway_specific_violin(object, interested_camods, pathway_name)
 
 \item{pathway_name}{The interested pathway, which should be within the KEGG and Hallmark pathways.}
 }
-\value{
-
-}
 \description{
 Pathway specific gene expression violin
 }

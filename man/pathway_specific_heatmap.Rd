@@ -11,9 +11,6 @@ pathway_specific_heatmap(object, pathway_name)
 
 \item{pathway_name}{The interested pathway, which should be within the KEGG and Hallmark pathways.}
 }
-\value{
-
-}
 \description{
 Pathway specific heatmap
 }
